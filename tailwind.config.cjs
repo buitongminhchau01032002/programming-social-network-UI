@@ -12,6 +12,9 @@ module.exports = {
             boxShadow: {
                 test: '0 0 1px 1px red',
             },
+            colors: {
+                primary: '#f472b6',
+            },
         },
     },
     plugins: [],
