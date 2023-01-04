@@ -1,5 +1,5 @@
 import PostCard from '../../components/PostCard';
-
+import { useState, useEffect } from 'react';
 const POST = [
     {
         title: 'Cach viet code khoong bugs',
@@ -43,14 +43,30 @@ const POST = [
 ];
 
 function Home() {
+    const [posts, setPosts] = useState([]);
+    useEffect(() => {
+        getPosts();
+        console.log(posts);
+    }, []);
+    function getPosts() {
+        fetch('http://localhost:8080/api/posts')
+            .then((res) => res.json())
+            .then((resJson) => {
+                setPosts(resJson.posts);
+            })
+            .catch((error) => {
+                console.log(error);
+                setPosts([]);
+            });
+    }
     return (
         <div className="">
             <div className="border-b py-3">Thanh tab</div>
 
             {/* Danh sách post */}
             <div>
-                {POST?.map((post, index) => (
-                    <PostCard key={index} title={post.title} brief={post.brief} />
+                {posts?.map((post, index) => (
+                    <PostCard key={index} post={post} />
                 ))}
             </div>
         </div>
