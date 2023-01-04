@@ -38,12 +38,16 @@ function PostCard({ post }) {
             >
                 {post.content}
             </p>
-            <div className="mb-2 ml-2 flex w-full border-t-2 border-dashed border-slate-200   pt-4">
+            <div className="mb-2 ml-2 flex w-full items-center  border-t-2 border-dashed border-slate-200  pt-4">
                 <div className="order-0 mr-4  rounded-full bg-emerald-200 font-medium text-emerald-800">
                     <span className="invisible absolute block select-none py-1 px-3 sm:visible sm:static">
                         {post?.category.name}
                     </span>
                     <path d="M4.5 12.75l6 6 9-13.5"></path>
+                </div>
+                <div className="items-center justify-center text-center align-middle text-xs  text-slate-500">
+                    {' '}
+                    #{post?.tag.name}
                 </div>
             </div>
             <div className="mb-2 ml-2 flex w-full border-t-2 border-dashed border-slate-200   pt-4">
