@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import CategoryBadge from '../../../components/CategoryBadge/CategoryBadge';
+import UserWithAvatarAndName from '../../../components/UserWithAvatarAndName/UserWithAvatarAndName';
 
 function Sidebar() {
     const [categories, setCategories] = useState([]);
@@ -17,14 +19,19 @@ function Sidebar() {
                 setCategories([]);
             });
     }, []);
+
+    function getColor() {
+        return 'hsl(' + 360 * Math.random() + ',' + 65 + '%,' + 65 + '%)';
+    }
+
     return (
         <aside className="">
             {/* SECTION CATEGORY */}
-            <section className="mt-4">
+            <section className="mt-5">
                 <h2 className="text-xl font-semibold">Chủ đề</h2>
-                <div className="mt-2 flex flex-wrap">
+                <div className="mt-3 flex flex-wrap">
                     {categories?.map((category) => (
-                        <button key={category._id} className="mr-2 mb-2 rounded-md bg-pink-400 px-5 py-1 text-white hover:bg-opacity-70">
+                        <button key={category._id} style={{ background: getColor() }} className="mr-2 mb-2 rounded-md px-5 py-1 font-medium text-white hover:shadow-md">
                             {category.name || 'Không tên'}
                         </button>
                     ))}
@@ -32,9 +39,40 @@ function Sidebar() {
             </section>
 
             {/* TOP POST SECTION */}
-            <section className="mt-4">
+            <section className="mt-5">
                 <h2 className="text-xl font-semibold">Nổi bật</h2>
-                <div className="mt-2 flex flex-wrap">àasffsaffasfdas</div>
+
+                <div className="mt-3 space-y-4">
+                    {/* POST */}
+                    <div className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 hover:shadow">
+                        <h2 className="font-bold">Tieu do bai post</h2>
+                        <p className="mt-1 text-sm leading-4 text-gray-600">Fasdfasf dsaf sadf sadf dsaf sdfa sfdsa dfsa fas fsaf sa fsdf as fas fasfsaf as</p>
+                        <div className="mt-3 flex items-center justify-between">
+                            <UserWithAvatarAndName avatar="https://picsum.photos/100/100" name="Nguyễn Vẫn A" />
+                            <CategoryBadge>Lập trình</CategoryBadge>
+                        </div>
+                    </div>
+
+                    {/* POST */}
+                    <div className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 hover:shadow">
+                        <h2 className="font-bold">Tieu do bai post</h2>
+                        <p className="mt-1 text-sm leading-4 text-gray-600">Fasdfasf dsaf sadf sadf dsaf sdfa sfdsa dfsa fas fsaf sa fsdf as fas fasfsaf as</p>
+                        <div className="mt-3 flex items-center justify-between">
+                            <UserWithAvatarAndName avatar="https://picsum.photos/100/100" name="Nguyễn Vẫn A" />
+                            <CategoryBadge>Lập trình</CategoryBadge>
+                        </div>
+                    </div>
+
+                    {/* POST */}
+                    <div className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 hover:shadow">
+                        <h2 className="font-bold">Tieu do bai post</h2>
+                        <p className="mt-1 text-sm leading-4 text-gray-600">Fasdfasf dsaf sadf sadf dsaf sdfa sfdsa dfsa fas fsaf sa fsdf as fas fasfsaf as</p>
+                        <div className="mt-3 flex items-center justify-between">
+                            <UserWithAvatarAndName avatar="https://picsum.photos/100/100" name="Nguyễn Vẫn A" />
+                            <CategoryBadge>Lập trình</CategoryBadge>
+                        </div>
+                    </div>
+                </div>
             </section>
         </aside>
     );
