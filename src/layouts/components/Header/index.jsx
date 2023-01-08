@@ -1,4 +1,5 @@
 import { Popover } from '@headlessui/react';
+import { Link } from 'react-router-dom';
 
 const USER = {
     displayName: 'Nguyễn Văn A',
@@ -71,9 +72,12 @@ function Header() {
                                     </div>
                                 </button>
 
-                                <button className="flex h-9 w-full min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark">
+                                <Link
+                                    to="/login"
+                                    className="flex h-9 w-full min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"
+                                >
                                     Đăng xuất
-                                </button>
+                                </Link>
                             </Popover.Panel>
                         </Popover>
                     </div>

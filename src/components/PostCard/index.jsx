@@ -21,7 +21,7 @@ function PostCard({ post }) {
                             src={avatar.avatar}
                         />
                     </button>
-                    <div className="mr-2 flex  cursor-pointer select-none  ">{post.creator.name}</div>
+                    <div className="mr-2 flex  cursor-pointer select-none  hover:underline  ">{post.creator.name}</div>
                 </div>
                 <div className="flex-grow select-none "></div>
                 <div className="flex">
