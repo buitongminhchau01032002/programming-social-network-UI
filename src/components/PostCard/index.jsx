@@ -46,7 +46,7 @@ function PostCard({ post }) {
             <span className="my-2 block cursor-pointer select-none  font-medium">{post.title}</span>
             <p
                 title="This is the description for this task"
-                className="description line-clamp-3 mb-2 h-full  text-slate-500 "
+                className="description line-clamp-3 mb-2 h-full select-none text-slate-500 "
             >
                 {post.content}
             </p>
@@ -78,11 +78,12 @@ function PostCard({ post }) {
                     #{post.tag.name}
                 </div>
             </div>
-            <div className="mb-2 ml-2 flex w-full  select-none   pt-4">
+            <div className="mb-2 ml-2 flex w-full     pt-4">
                 <button
                     title="unmark as important"
-                    className={clsx('fa-sharp fa-solid fa-heart mr-1 text-gray-300 ', {
+                    className={clsx('fa-sharp fa-solid fa-heart mr-1  ', {
                         '  text-red-500': heart,
+                        '  text-gray-300': !heart,
                     })}
                     onClick={() => {
                         if (heart) {
