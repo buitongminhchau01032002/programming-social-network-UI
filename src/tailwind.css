@@ -6,4 +6,7 @@
     :root {
         --h-header: 60px;
     }
+    input {
+        @apply caret-primary-dark outline-none;
+    }
 }

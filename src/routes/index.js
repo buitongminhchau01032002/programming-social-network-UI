@@ -1,5 +1,6 @@
 // Layouts
 import OnlyHeaderLayout from '../layouts/OnlyHeaderLayout';
+import CommentTemp from '../pages/CommentTemp';
 
 // Pages
 import Home from '../pages/Home';
@@ -11,6 +12,10 @@ const publicRoutes = [
     {
         path: '/',
         component: Home,
+    },
+    {
+        path: '/comment',
+        component: CommentTemp,
     },
     {
         path: '/login',
