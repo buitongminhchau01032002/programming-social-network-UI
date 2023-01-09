@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { userSelector } from '../../redux/selectors';
 import { userActions } from '../../redux/slices/userSlice';
 import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
+import Like from './Like';
 
 function CommentTemp() {
     const user = useSelector(userSelector);
@@ -33,7 +34,7 @@ function CommentTemp() {
                 {/* LIST COMMENT */}
                 <div className="mt-6">
                     {/* GROUP 1 */}
-                    <div className="mt-4">
+                    <div className="mt-1 pt-4">
                         {/* MAIN 1 */}
                         <div>
                             <div className="flex items-center">
@@ -43,12 +44,15 @@ function CommentTemp() {
                             <p className="mt-2 text-gray-600">
                                 Chú thích (comment) trong mã nguồn giúp cho các đoạn code của bạn chở nên dễ hiểu hơn.
                             </p>
+                            <div className="mt-2">
+                                <Like />
+                            </div>
                         </div>
 
                         {/* REPLIES 1 */}
                         <div className="border-l border-primary pl-6">
                             {/* GROUP 1.1 */}
-                            <div className="mt-4">
+                            <div className="mt-1 pt-4">
                                 {/* MAIN 1.1 */}
                                 <div>
                                     <div className="flex items-center">
@@ -64,7 +68,7 @@ function CommentTemp() {
                                 {/* REPLIES 1.1 */}
                                 <div className="border-l border-primary pl-6">
                                     {/* GROUP 1.1.1 */}
-                                    <div className="mt-4">
+                                    <div className="mt-1 pt-4">
                                         {/* MAIN 1.1.1 */}
                                         <div>
                                             <div className="flex items-center">
@@ -83,7 +87,7 @@ function CommentTemp() {
                             </div>
 
                             {/* GROUP 1.2 */}
-                            <div className="mt-4">
+                            <div className="mt-1 pt-4">
                                 {/* MAIN 1.2 */}
                                 <div>
                                     <div className="flex items-center">
@@ -102,8 +106,8 @@ function CommentTemp() {
                     </div>
 
                     {/* GROUP 2 */}
-                    <div className="mt-4">
-                        {/* MAIN 1 */}
+                    <div className="mt-1 pt-4">
+                        {/* MAIN 2 */}
                         <div>
                             <div className="flex items-center">
                                 <UserWithAvatarAndName user={{ name: 'Trần Văn B' }} />
@@ -114,7 +118,23 @@ function CommentTemp() {
                             </p>
                         </div>
 
-                        {/* REPLIES 1 */}
+                        {/* REPLIES 2 */}
+                    </div>
+
+                    {/* GROUP 3 */}
+                    <div className="mt-1 pt-4">
+                        {/* MAIN 2 */}
+                        <div>
+                            <div className="flex items-center">
+                                <UserWithAvatarAndName user={{ name: 'Trần Văn B' }} />
+                                <div className="ml-4 text-xs text-gray-600">1 giờ trước</div>
+                            </div>
+                            <p className="mt-2 text-gray-600">
+                                Chú thích (comment) trong mã nguồn giúp cho các đoạn code của bạn chở nên dễ hiểu hơn.
+                            </p>
+                        </div>
+
+                        {/* REPLIES 3 */}
                     </div>
                 </div>
             </div>
