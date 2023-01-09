@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { convert as convertHTMLtoText } from 'html-to-text';
+import ellipsize from 'ellipsize';
 import CategoryBadge from '../../../components/CategoryBadge/CategoryBadge';
 import UserWithAvatarAndName from '../../../components/UserWithAvatarAndName/UserWithAvatarAndName';
 import colorizeCategory from '../../../utils/colorizeCategory';
@@ -58,7 +60,7 @@ function Sidebar() {
                     {posts?.slice(0, 3)?.map((post) => (
                         <div key={post._id} className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 hover:shadow">
                             <h2 className="font-bold">{post?.title}</h2>
-                            <p className="mt-1 text-sm leading-4 text-gray-600">{post?.content?.substring(0, 100) + '...'}</p>
+                            <p className="mt-1 text-sm leading-4 text-gray-600">{ellipsize(convertHTMLtoText(post?.content, { wordwrap: false }), 100)}</p>
                             <div className="mt-3 flex items-center justify-between">
                                 <UserWithAvatarAndName user={post?.creator} />
                                 <CategoryBadge category={post?.category} />
