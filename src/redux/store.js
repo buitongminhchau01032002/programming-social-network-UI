@@ -1,48 +1,33 @@
 import { configureStore } from '@reduxjs/toolkit';
 import orderReducer from './slices/orderSlice';
 import accountReducer from './slices/accountSlide';
+import userReducer from './slices/userSlice';
 
 const localStorageMiddleware = (store) => (next) => (action) => {
     const result = next(action);
     // Save to localStorage
     const state = store.getState();
-    localStorage.setItem('oop_account', JSON.stringify(state.account));
+    localStorage.setItem('pmcs_user', JSON.stringify(state.user));
 
     return result;
 };
 
 const reHydrateStore = () => {
-    if (localStorage.getItem('oop_account') !== null) {
+    if (localStorage.getItem('pmcs_user') !== null) {
         return {
-            order: {
-                customer: {
-                    name: '',
-                    phone: '',
-                    address: '',
-                },
-                details: [],
-                totalPrice: 0,
-            },
-            account: JSON.parse(localStorage.getItem('oop_account')),
-        };
-    } else {
-        return {
-            order: {
-                customer: {
-                    name: '',
-                    phone: '',
-                    address: '',
-                },
-                details: [],
-                totalPrice: 0,
-            },
-            account: null,
+            user: JSON.parse(localStorage.getItem('pmcs_user')),
         };
     }
+
+    return {
+        user: null,
+    };
 };
 
-export const store = configureStore({
-    reducer: { order: orderReducer, account: accountReducer },
+const store = configureStore({
+    reducer: { order: orderReducer, account: accountReducer, user: userReducer },
     preloadedState: reHydrateStore(),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
 });
+
+export default store;

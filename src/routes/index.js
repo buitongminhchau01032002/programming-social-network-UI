@@ -1,9 +1,10 @@
 // Layouts
-// import FullLayout from '../layouts/FullLayout';
+import OnlyHeaderLayout from '../layouts/OnlyHeaderLayout';
 
 // Pages
 import Home from '../pages/Home';
 import Login from '../pages/Login';
+import SampleLogin from '../pages/SampleLogin';
 
 // Public routes
 const publicRoutes = [
@@ -14,6 +15,11 @@ const publicRoutes = [
     {
         path: '/login',
         component: Login,
+    },
+    {
+        path: '/sample-login',
+        component: SampleLogin,
+        layout: OnlyHeaderLayout,
     },
 ];
 
