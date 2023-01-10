@@ -4,11 +4,12 @@ import { useDispatch } from 'react-redux';
 import { userActions } from '../../redux/slices/userSlice';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Formik, useFormik } from 'formik';
+
 const validationSchema = Yup.object({
     email: Yup.string().required('Vui lòng nhập email!'),
-    password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
     password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
 });
 
@@ -17,10 +18,11 @@ function Login() {
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
-    const [ti, setTi] = useState([]);
-    const showSuccessNoti = () => toast.success('Đăng nhập thành công!');
-    const showErorrNoti = () => toast.error('Đăng nhập không thành công!');
-    const showErorrPass = () => toast.error('Sai mật khẩu!');
+    let success = 'Đăng nhập thành công';
+    let error = 'Đăng nhập thất bại';
+
+    const showSuccessNoti = () => toast.success(success);
+    const showErorrNoti = () => toast.error(error);
 
     const form = useFormik({
         initialValues: {
@@ -44,9 +46,9 @@ function Login() {
                 if (resBody.error) {
                     console.log('Đăng nhập không thành công');
                     console.log(resBody);
-                    console.log(JSON.stringify(resBody, null, 2).error);
-                    alert(JSON.stringify(resBody, null, 2).me);
-                    // setTi(JSON.stringify(resBody, null, 2).message);
+                    error = resBody.error.message;
+                    // alert(JSON.stringify(resBody, null, 2));
+                    showErorrNoti();
                     return;
                 }
 
@@ -54,9 +56,9 @@ function Login() {
                 user.token = resBody.token;
                 dispatch(userActions.login(user));
                 console.log(user);
-                alert(JSON.stringify(user, null, 2));
-                setTi(JSON.stringify(user, null, 2));
-                // navigate('/');
+                // alert(JSON.stringify(user, null, 2));
+                showSuccessNoti();
+                navigate('/');
             })
             .catch((err) => {
                 console.log(err);
@@ -66,6 +68,7 @@ function Login() {
     return (
         <>
             <div>
+                <ToastContainer hideProgressBar />
                 <section className="bg-gray-200 ">
                     <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
                         <a href="#" className="mb-6 flex items-center text-2xl font-semibold text-green-600 ">
@@ -126,7 +129,7 @@ function Login() {
                                                 'opacity-100': form.touched.password && form.errors.password,
                                             })}
                                         >
-                                            {ti || 'No message'}
+                                            {form.errors.password || 'No message'}
                                         </span>
                                     </div>
 
