@@ -20,7 +20,10 @@ function Header() {
             {/* ACTION GROUP */}
             {user ? (
                 <div className="flex items-center space-x-3">
-                    <button className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark">
+                    <Link
+                        to="/create-post"
+                        className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"
+                    >
                         <span className="pr-1">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +39,7 @@ function Header() {
                             </svg>
                         </span>
                         Tạo bài đăng
-                    </button>
+                    </Link>
 
                     <div className="flex items-center space-x-1">
                         <button className="h-9 w-9 overflow-hidden rounded-full ring-primary hover:ring-2">

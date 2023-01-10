@@ -6,6 +6,7 @@ import CommentTemp from '../pages/CommentTemp';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import SampleLogin from '../pages/SampleLogin';
+import CreatePost from '../pages/CreatePost';
 
 // Public routes
 const publicRoutes = [
@@ -28,6 +29,12 @@ const publicRoutes = [
     },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+    {
+        path: '/create-post',
+        component: CreatePost,
+        layout: OnlyHeaderLayout,
+    },
+];
 
 export { publicRoutes, privateRoutes };
