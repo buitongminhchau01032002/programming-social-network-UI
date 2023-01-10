@@ -21,6 +21,7 @@ const publicRoutes = [
     {
         path: '/login',
         component: Login,
+        layout: OnlyHeaderLayout,
     },
     {
         path: '/sample-login',

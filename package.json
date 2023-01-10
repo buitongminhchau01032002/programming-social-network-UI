@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "clsx": "^1.2.1",
     "ellipsize": "^0.5.1",
+    "formik": "^2.2.9",
     "html-to-text": "^9.0.3",
     "jodit-react": "^1.3.32",
     "moment": "^2.29.4",
