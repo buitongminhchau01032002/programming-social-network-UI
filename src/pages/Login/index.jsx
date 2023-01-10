@@ -4,7 +4,6 @@ import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { accountActions } from '../../redux/slices/accountSlide';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
