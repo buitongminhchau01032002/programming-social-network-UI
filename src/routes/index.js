@@ -7,12 +7,17 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
+import DetailPost from '../pages/DetailPost';
 
 // Public routes
 const publicRoutes = [
     {
         path: '/',
         component: Home,
+    },
+    {
+        path: '/detailPost',
+        component: DetailPost,
     },
     {
         path: '/comment',
