@@ -1,12 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { userActions } from '../../redux/slices/userSlice';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Formik, useFormik } from 'formik';
+import { useFormik } from 'formik';
 
 const validationSchema = Yup.object({
     email: Yup.string().required('Vui lòng nhập email!'),
@@ -19,33 +16,29 @@ const validationSchema = Yup.object({
 });
 
 function SignUp() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
     const [loading, setLoading] = useState(false);
-    let success = 'Đăng nhập thành công';
-    let error = 'Đăng nhập thất bại';
+    let success = 'Hãy vào email để xác nhận tài khoản';
+    let error = 'Đăng ký thất bại';
 
     const showSuccessNoti = () => toast.success(success);
     const showErorrNoti = () => toast.error(error);
 
     const form = useFormik({
         initialValues: {
-            name: '',
             email: '',
+            name: '',
             password: '',
             confirmPassword: '',
+            birthday: '2002/03/01',
             roleID: '638f9713d35c2b66f0e75768',
         },
         validationSchema,
         onSubmit: handleSignUp,
     });
-
-    console.log('r');
     //
     function handleSignUp(values) {
-        setLoading(true);
-        fetch('http://localhost:5000/api/account', {
+        // setLoading(true);
+        fetch('http://localhost:8080/api/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -53,21 +46,15 @@ function SignUp() {
             body: JSON.stringify(values),
         })
             .then((res) => res.json())
-            .then((resJson) => {
-                if (resJson.success) {
-                    setLoading(false);
-                    showSuccessNoti();
-                    bacsicForm.resetForm();
-                    bacsicForm.values.RePassword = '';
-                } else {
-                    setLoading(false);
-                    console.log(values);
+            .then((resBody) => {
+                if (resBody.error) {
                     showErorrNoti();
+                } else {
+                    showSuccessNoti();
                 }
             })
-            .catch(() => {
-                setLoading(false);
-                console.log(values);
+            .catch((error) => {
+                // setLoading(false);
                 showErorrNoti();
             });
     }
@@ -87,9 +74,9 @@ function SignUp() {
                             />
                             Mạng xã hội lập trình
                         </a>
-                        <div className=" w-[448px] rounded-lg bg-pink-50 shadow">
+                        <div className=" w-[448px] rounded-lg  shadow-2xl">
                             <div className="space-y-4 p-8">
-                                <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng ký atài khoản</h1>
+                                <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng ký tài khoản</h1>
 
                                 <form onSubmit={form.handleSubmit}>
                                     <div className="mb-2">
