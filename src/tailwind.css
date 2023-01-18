@@ -6,12 +6,19 @@
     :root {
         --h-header: 60px;
     }
-    input {
+    input,
+    select {
         @apply caret-primary-dark outline-none;
     }
 }
 
 @layer components {
+    .text-editor a {
+        @apply text-primary-dark underline decoration-primary-dark;
+    }
+    .text-editor ul {
+        @apply list-disc p-5;
+    }
     .btn {
         @apply flex items-center justify-center rounded text-white;
     }
