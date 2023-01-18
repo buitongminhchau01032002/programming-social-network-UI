@@ -5,10 +5,10 @@ import CommentTemp from '../pages/CommentTemp';
 // Pages
 import Home from '../pages/Home';
 import Login from '../pages/Login';
+import SignUp from '../pages/SignUp';
 import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
 import DetailPost from '../pages/DetailPost';
-import SignUp from '../pages/SignUp';
 import Verify from '../pages/Verify';
 
 // Public routes
@@ -36,7 +36,7 @@ const publicRoutes = [
         layout: OnlyHeaderLayout,
     },
     {
-        path: '/',
+        path: '/api/verification/:token',
         component: Verify,
         layout: OnlyHeaderLayout,
     },
