@@ -85,9 +85,12 @@ function Header() {
                 </div>
             ) : (
                 <div className="flex items-center space-x-2">
-                    <button className="flex h-9 min-w-[120px] items-center justify-center rounded-md border border-primary px-5 text-sm font-medium text-primary-dark transition hover:bg-primary hover:text-white">
+                    <Link
+                        to="/signup"
+                        className="flex h-9 min-w-[120px] items-center justify-center rounded-md border border-primary px-5 text-sm font-medium text-primary-dark transition hover:bg-primary hover:text-white"
+                    >
                         Đăng ký
-                    </button>
+                    </Link>
                     <Link
                         to="/login"
                         className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"

@@ -8,6 +8,8 @@ import Login from '../pages/Login';
 import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
 import DetailPost from '../pages/DetailPost';
+import SignUp from '../pages/Signup';
+import Verify from '../pages/Verify';
 
 // Public routes
 const publicRoutes = [
@@ -26,6 +28,16 @@ const publicRoutes = [
     {
         path: '/login',
         component: Login,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/signup',
+        component: SignUp,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/',
+        component: Verify,
         layout: OnlyHeaderLayout,
     },
     {
