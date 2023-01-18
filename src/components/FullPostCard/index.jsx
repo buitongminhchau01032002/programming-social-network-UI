@@ -6,12 +6,12 @@ import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndNam
 const avatar = {
     avatar: 'https://picsum.photos/100/100',
 };
-function PostCard({ post }) {
+function FullPostCard({ post }) {
     const [heart, setHeart] = useState(false);
     // const [tags, setTags] = useState([post.tag]);
 
     return (
-        <div className=" mt-4 flex h-full  cursor-pointer flex-col justify-between rounded-lg border border-gray-300 p-3 px-3 py-2 text-left transition  hover:shadow-md ">
+        <div className=" mt-4 flex h-full  cursor-pointer flex-col justify-between  p-3 px-3 py-2 text-left transition ">
             <div className="my-1 flex justify-between ">
                 <div className="flex">
                     <button className="mr-2 mb-2 h-6 w-6 items-center justify-center overflow-hidden rounded-full ring-primary hover:ring-2">
@@ -43,7 +43,7 @@ function PostCard({ post }) {
                 </div>
             </div>
 
-            <h2 className="my-2 cursor-pointer select-none font-bold line-clamp-2 hover:line-clamp-none ">
+            <h2 className="my-2 cursor-pointer select-none font-bold  ">
                 {post?.title} Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu
                 đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài
                 Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề
@@ -51,7 +51,7 @@ function PostCard({ post }) {
             </h2>
             <p
                 title="This is the description for this task"
-                className="mt-1 h-full text-sm leading-5  text-gray-600 line-clamp-5 hover:line-clamp-none "
+                className="mt-1  h-full text-sm leading-5  text-gray-600  "
             >
                 {post?.content}
                 Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
@@ -108,4 +108,4 @@ function PostCard({ post }) {
     );
 }
 
-export default PostCard;
+export default FullPostCard;

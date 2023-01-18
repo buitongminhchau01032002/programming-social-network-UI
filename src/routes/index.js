@@ -7,6 +7,9 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
+import DetailPost from '../pages/DetailPost';
+import SignUp from '../pages/Signup';
+import Verify from '../pages/Verify';
 
 // Public routes
 const publicRoutes = [
@@ -15,12 +18,27 @@ const publicRoutes = [
         component: Home,
     },
     {
+        path: '/detailPost',
+        component: DetailPost,
+    },
+    {
         path: '/comment',
         component: CommentTemp,
     },
     {
         path: '/login',
         component: Login,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/signup',
+        component: SignUp,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/',
+        component: Verify,
+        layout: OnlyHeaderLayout,
     },
     {
         path: '/sample-login',
