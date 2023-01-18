@@ -8,7 +8,7 @@ import Login from '../pages/Login';
 import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
 import DetailPost from '../pages/DetailPost';
-import SignUp from '../pages/Signup';
+import SignUp from '../pages/SignUp';
 import Verify from '../pages/Verify';
 
 // Public routes
