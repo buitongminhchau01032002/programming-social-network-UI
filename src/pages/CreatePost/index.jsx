@@ -1,39 +1,41 @@
-// import { useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import CategoryInput from './CategoryInput';
 import PostContentEditor from './PostContentEditor';
 
 const validationSchema = Yup.object({
-    name: Yup.string().required('Trường này bắt buộc'),
-    price: Yup.number().required('Trường này bắt buộc').min(1, 'Giá phải lớn hơn 0'),
-    quantity: Yup.number().required('Trường này bắt buộc').min(1, 'Số lượng phải lớn hơn 0'),
-    type: Yup.string().required('Trường này bắt buộc'),
+    title: Yup.string().required('Trường này bắt buộc'),
 });
 
 function CreatePost() {
-    // const formik = useFormik({
-    //     initialValues: {
-    //         name: '',
-    //         price: '',
-    //         quantity: '',
-    //         type: '',
-    //         image: '',
-    //     },
-    //     validationSchema,
-    //     // onSubmit: handleFormsubmit,
-    // });
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            tag: '',
+        },
+        validationSchema,
+        onSubmit: (values) => {
+            alert(JSON.stringify(values, null, 2));
+        },
+    });
+
     return (
         <div>
             <h2 className="py-10 text-center text-lg font-bold">Tạo bài đăng</h2>
 
-            <form className="grid grid-cols-3 gap-7">
+            <form className="grid grid-cols-3 gap-7" onSubmit={formik.handleSubmit}>
                 {/* LEFT */}
                 <div className="col-span-2">
                     <div className="mb-6">
                         <label className="font-semibold">Tiêu đề</label>
                         <input
+                            name="title"
+                            type="text"
                             className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
                             placeholder="Tiêu đề bài viết"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.title}
                         />
                     </div>
 
@@ -47,7 +49,10 @@ function CreatePost() {
                         </div>
                     </div>
 
-                    <button className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark">
+                    <button
+                        type="submit"
+                        className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"
+                    >
                         <span className="pr-1">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -73,10 +78,15 @@ function CreatePost() {
                         <CategoryInput className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500" />
                     </div>
                     <div className="mb-6">
-                        <label className="font-semibold">Tiêu đề</label>
+                        <label className="font-semibold">Tag</label>
                         <input
+                            type="text"
+                            name="tag"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.tag}
                             className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
-                            placeholder="Tiêu đề bài viết"
+                            placeholder="tag..."
                         />
                     </div>
                 </div>

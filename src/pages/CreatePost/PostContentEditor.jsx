@@ -1,11 +1,10 @@
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import JoditEditor from 'jodit-react';
 
 const BUTTONS = ['bold', 'italic', 'underline', 'link', 'ul', 'eraser'];
 
 const PostContentEditor = ({ initialValue, onChangeContent, onBlur }) => {
     const editor = useRef(null);
-
     return (
         <JoditEditor
             ref={editor}
@@ -16,8 +15,8 @@ const PostContentEditor = ({ initialValue, onChangeContent, onBlur }) => {
                 buttonsSM: BUTTONS,
             }}
             tabIndex={1}
-            onBlur={(newContent) => onBlur(newContent)}
-            onChange={(newContent) => onChangeContent(newContent)}
+            onBlur={(newContent) => onBlur && onBlur(newContent)}
+            onChange={(newContent) => onChangeContent && onChangeContent(newContent)}
         />
     );
 };
