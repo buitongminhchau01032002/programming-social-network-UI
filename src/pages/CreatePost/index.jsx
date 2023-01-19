@@ -2,6 +2,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import CategoryInput from './CategoryInput';
 import PostContentEditor from './PostContentEditor';
+import TagInput from './TagInput';
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Trường này bắt buộc'),
@@ -11,11 +12,13 @@ function CreatePost() {
     const formik = useFormik({
         initialValues: {
             title: '',
-            tag: '',
+            categoryId: '',
+            tagId: '',
+            tagName: '',
         },
         validationSchema,
         onSubmit: (values) => {
-            alert(JSON.stringify(values, null, 2));
+            console.log(values);
         },
     });
 
@@ -42,10 +45,7 @@ function CreatePost() {
                     <div className="mb-6">
                         <label className="font-semibold">Nội dung</label>
                         <div className="text-editor mt-1">
-                            <PostContentEditor
-                                initialValue="Nội dung bài viết ... "
-                                onChangeContent={(content) => console.log(content)}
-                            />
+                            <PostContentEditor />
                         </div>
                     </div>
 
@@ -75,18 +75,21 @@ function CreatePost() {
                 <div>
                     <div className="mb-6">
                         <label className="font-semibold">Chủ đề</label>
-                        <CategoryInput className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500" />
+                        <CategoryInput
+                            name="categoryId"
+                            className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            value={formik.values.categoryId}
+                        />
                     </div>
                     <div className="mb-6">
                         <label className="font-semibold">Tag</label>
-                        <input
-                            type="text"
-                            name="tag"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.tag}
-                            className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
-                            placeholder="tag..."
+                        <TagInput
+                            formik={formik}
+                            formikFieldId="tagId"
+                            formikFieldName="tagName"
+                            categoryId={formik.values.categoryId}
                         />
                     </div>
                 </div>

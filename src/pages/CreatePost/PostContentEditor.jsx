@@ -4,6 +4,7 @@ import JoditEditor from 'jodit-react';
 const BUTTONS = ['bold', 'italic', 'underline', 'link', 'ul', 'eraser'];
 
 const PostContentEditor = ({ initialValue, onChangeContent, onBlur }) => {
+    console.log('redrender');
     const editor = useRef(null);
     return (
         <JoditEditor
@@ -21,4 +22,4 @@ const PostContentEditor = ({ initialValue, onChangeContent, onBlur }) => {
     );
 };
 
-export default PostContentEditor;
+export default memo(PostContentEditor);
