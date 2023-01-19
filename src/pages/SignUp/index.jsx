@@ -5,6 +5,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useFormik } from 'formik';
 
+import { Link, useNavigate } from 'react-router-dom';
+
 const validationSchema = Yup.object({
     email: Yup.string().required('Vui lòng nhập email!'),
     password: Yup.string()
@@ -16,6 +18,7 @@ const validationSchema = Yup.object({
 });
 
 function SignUp() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     let success = 'Hãy vào email để xác nhận tài khoản';
     let error = 'Đăng ký thất bại';
@@ -30,7 +33,7 @@ function SignUp() {
             password: '',
             confirmPassword: '',
             birthday: '2002/03/01',
-            roleID: '638f9713d35c2b66f0e75768',
+            roleId: '638f9713d35c2b66f0e75768',
         },
         validationSchema,
         onSubmit: handleSignUp,
@@ -49,8 +52,12 @@ function SignUp() {
             .then((resBody) => {
                 if (resBody.error) {
                     showErorrNoti();
+                    console.log(resBody.error);
                 } else {
                     showSuccessNoti();
+                    setTimeout(() => {
+                        navigate('/login');
+                    }, 3000);
                 }
             })
             .catch((error) => {
