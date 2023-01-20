@@ -1,17 +1,27 @@
 import { useFormik } from 'formik';
+import { useCallback } from 'react';
 import * as Yup from 'yup';
+import { convert as convertHTMLtoText } from 'html-to-text';
 import CategoryInput from './CategoryInput';
 import PostContentEditor from './PostContentEditor';
 import TagInput from './TagInput';
+import clsx from 'clsx';
 
 const validationSchema = Yup.object({
-    title: Yup.string().required('Trường này bắt buộc'),
+    title: Yup.string().required('Trường này bắt buộc').min(4, 'Tiêu đề phải ít nhất 4 kí tự'),
+    content: Yup.string().test('min-content', 'Nội dung phải ít nhất 6 kí tự', (value) => {
+        const plainValue = convertHTMLtoText(value, { wordwrap: false });
+        return plainValue.length >= 6;
+    }),
+    categoryId: Yup.string().required('Trường này bắt buộc'),
+    tagName: Yup.string().required('Trường này bắt buộc'),
 });
 
 function CreatePost() {
     const formik = useFormik({
         initialValues: {
-            title: '',
+            title: 'Tiêu đề',
+            content: 'Nhập nội dung',
             categoryId: '',
             tagId: '',
             tagName: '',
@@ -22,6 +32,17 @@ function CreatePost() {
         },
     });
 
+    const handleChangeContent = useCallback((newContent) => {
+        formik.setFieldValue('content', newContent);
+    }, []);
+
+    const setTouchContent = useCallback(() => {
+        formik.setTouched({ ...formik.touched, content: true });
+        console.log('set touch');
+    }, []);
+
+    console.log(formik.touched);
+
     return (
         <div>
             <h2 className="py-10 text-center text-lg font-bold">Tạo bài đăng</h2>
@@ -29,23 +50,47 @@ function CreatePost() {
             <form className="grid grid-cols-3 gap-7" onSubmit={formik.handleSubmit}>
                 {/* LEFT */}
                 <div className="col-span-2">
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="font-semibold">Tiêu đề</label>
                         <input
                             name="title"
                             type="text"
-                            className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
+                            className={clsx('text-input mt-1', {
+                                invalid: formik.errors.title && formik.touched.title,
+                            })}
                             placeholder="Tiêu đề bài viết"
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.title}
                         />
+                        <div
+                            className={clsx('invisible text-sm', {
+                                '!visible text-red-500': formik.errors.title && formik.touched.title,
+                            })}
+                        >
+                            {formik.errors.title || 'No error message'}
+                        </div>
                     </div>
 
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="font-semibold">Nội dung</label>
-                        <div className="text-editor mt-1">
-                            <PostContentEditor />
+                        <div
+                            className={clsx('text-editor mt-1 rounded-sm', {
+                                'ring-1 ring-red-500': formik.errors.content && formik.touched.content,
+                            })}
+                        >
+                            <PostContentEditor
+                                setFormik={handleChangeContent}
+                                initValue={formik.initialValues.content}
+                                setTouch={setTouchContent}
+                            />
+                        </div>
+                        <div
+                            className={clsx('invisible text-sm', {
+                                '!visible text-red-500': formik.errors.content && formik.touched.content,
+                            })}
+                        >
+                            {formik.errors.content || 'No er'}
                         </div>
                     </div>
 
@@ -73,24 +118,43 @@ function CreatePost() {
 
                 {/* RIGHT */}
                 <div>
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="font-semibold">Chủ đề</label>
                         <CategoryInput
                             name="categoryId"
-                            className="mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
+                            className={clsx('text-input mt-1', {
+                                invalid: formik.errors.categoryId && formik.touched.categoryId,
+                            })}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             value={formik.values.categoryId}
                         />
+                        <div
+                            className={clsx('invisible text-sm', {
+                                '!visible text-red-500': formik.errors.categoryId && formik.touched.categoryId,
+                            })}
+                        >
+                            {formik.errors.categoryId || 'No er'}
+                        </div>
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-4">
                         <label className="font-semibold">Tag</label>
                         <TagInput
                             formik={formik}
                             formikFieldId="tagId"
                             formikFieldName="tagName"
+                            className={clsx('text-input mt-1', {
+                                invalid: formik.errors.tagName && formik.touched.tagName,
+                            })}
                             categoryId={formik.values.categoryId}
                         />
+                        <div
+                            className={clsx('invisible text-sm', {
+                                '!visible text-red-500': formik.errors.tagName && formik.touched.tagName,
+                            })}
+                        >
+                            {formik.errors.tagName || 'No er'}
+                        </div>
                     </div>
                 </div>
             </form>

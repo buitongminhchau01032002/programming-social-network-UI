@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 
-function TagInput({ categoryId, formik, formikFieldId, formikFieldName }) {
+function TagInput({ categoryId, formik, formikFieldId, formikFieldName, className }) {
     const [tags, setTags] = useState([]);
 
     const inputRef = useRef(null);
@@ -29,10 +29,8 @@ function TagInput({ categoryId, formik, formikFieldId, formikFieldName }) {
     }, [categoryId]);
 
     function handleChange(e) {
-        formik.setFieldValue(formikFieldName, e.target.value);
-
-        // find id from value
         const name = e.target.value;
+        // find id from value
         const filterResult = tags.filter((tag) => tag.name.includes(name));
         setSearch(filterResult);
 
@@ -42,10 +40,15 @@ function TagInput({ categoryId, formik, formikFieldId, formikFieldName }) {
         } else {
             formik.setFieldValue(formikFieldId, '');
         }
+
+        formik.setFieldValue(formikFieldName, name);
+    }
+
+    function handleBlur(e) {
+        formik.setTouched({ ...formik.touched, [formikFieldName]: true });
     }
 
     function handlePanelClick(tag) {
-        console.log(tag);
         formik.setFieldValue(formikFieldId, tag._id);
         formik.setFieldValue(formikFieldName, tag.name);
     }
@@ -57,12 +60,13 @@ function TagInput({ categoryId, formik, formikFieldId, formikFieldName }) {
                 type="text"
                 value={formik.values[formikFieldName]}
                 onChange={handleChange}
-                className="peer mt-1 h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500"
+                onBlur={handleBlur}
+                className={className}
                 placeholder="Tag"
             />
 
             {search.length > 0 && (
-                <div className="absolute left-0 right-0 hidden overflow-hidden rounded border shadow group-focus-within:block">
+                <div className="absolute left-0 right-0 hidden overflow-hidden rounded border bg-white shadow group-focus-within:block">
                     {search.map((tag) => (
                         <button
                             key={tag._id}
