@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import * as Yup from 'yup';
+import { useNavigate } from 'react-router-dom';
 import { convert as convertHTMLtoText } from 'html-to-text';
 import CategoryInput from './CategoryInput';
 import PostContentEditor from './PostContentEditor';
@@ -9,6 +10,7 @@ import clsx from 'clsx';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../redux/selectors/userSelector';
 import ImageInput from './ImageInput';
+import { toast } from 'react-toastify';
 
 const validationSchema = Yup.object({
     title: Yup.string().required('Trường này bắt buộc').min(4, 'Tiêu đề phải ít nhất 4 kí tự'),
@@ -21,17 +23,82 @@ const validationSchema = Yup.object({
 });
 
 function CreatePost() {
+    const [loading, setLoading] = useState(false);
+    const showSuccessNoti = () => toast.success('Tạo bài đăng thành công!');
+    const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
+    const navigate = useNavigate();
+
+    const createPost = async (values) => {
+        try {
+            setLoading(true);
+            // check and create tag
+            if (!values.tagId) {
+                const res = await fetch('http://localhost:8080/api/tag', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + user?.token,
+                    },
+                    body: JSON.stringify({
+                        categoryId: values.categoryId,
+                        name: values.tagName,
+                    }),
+                });
+                const data = await res.json();
+                if (data.error) {
+                    throw data.error;
+                }
+                values.tagId = data.tag._id;
+            }
+
+            // Get form data
+            const formData = new FormData();
+            Object.keys(values).forEach((key) => {
+                if (key !== 'images') {
+                    formData.append(key, values[key]);
+                } else {
+                    if (values.images.length > 0) {
+                        values.images.forEach((image) => {
+                            formData.append('images', image);
+                        });
+                    }
+                }
+            });
+
+            // Create post
+
+            const res = await fetch('http://localhost:8080/api/post', {
+                method: 'POST',
+                headers: {
+                    Authorization: 'Bearer ' + user?.token,
+                },
+                body: formData,
+            });
+            const data = await res.json();
+            if (data.error) {
+                throw data.error;
+            }
+
+            showSuccessNoti();
+            navigate('/');
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+            showErorrNoti();
+        }
+    };
+
     const formik = useFormik({
         initialValues: {
-            title: 'Tiêu đề',
-            content: 'Nhập nội dung',
+            title: '',
+            content: '',
             categoryId: '',
             tagId: '',
             tagName: '',
             images: [],
         },
         validationSchema,
-        onSubmit: handleSubmit,
+        onSubmit: createPost,
     });
     const user = useSelector(userSelector);
 
@@ -41,45 +108,7 @@ function CreatePost() {
 
     const setTouchContent = useCallback(() => {
         formik.setTouched({ ...formik.touched, content: true });
-        console.log('set touch');
     }, []);
-
-    function handleSubmit(values) {
-        const formData = new FormData();
-        // Object.keys(values).forEach((key) => {
-        //     formData.append(key, values[key]);
-        // });
-
-        Object.keys(values).forEach((key) => {
-            if (key !== 'images') {
-                formData.append(key, values[key]);
-            } else {
-                if (values.images.length > 0) {
-                    values.images.forEach((image) => {
-                        formData.append('images', image);
-                    });
-                }
-            }
-        });
-
-        createPost(formData);
-    }
-    const createPost = async (formData) => {
-        try {
-            const res = await fetch('http://localhost:8080/api/post', {
-                method: 'POST',
-                headers: {
-                    Authorization: 'Bearer ' + user?.token,
-                },
-                body: formData,
-            });
-            const data = await res.json();
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    console.log(formik.values);
 
     return (
         <div>
@@ -180,26 +209,53 @@ function CreatePost() {
                         </div>
                     </div>
                 </div>
-                <button
-                    type="submit"
-                    className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"
-                >
-                    <span className="pr-1">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="h-6 w-6 pt-0.5"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                    </span>
-                    Tạo bài đăng
-                </button>
+                <div className="flex items-center">
+                    <button
+                        type="submit"
+                        className={clsx(
+                            'flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark',
+                            {
+                                'pointer-events-none opacity-50': !formik.dirty || loading,
+                            }
+                        )}
+                    >
+                        <span className="pr-1">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className="h-6 w-6 pt-0.5"
+                            >
+                                <path
+                                    fillRule="evenodd"
+                                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
+                                    clipRule="evenodd"
+                                />
+                            </svg>
+                        </span>
+                        Tạo bài đăng
+                    </button>
+
+                    {loading && (
+                        <div className="ml-4 flex items-center font-medium text-primary-dark">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="h-6 w-6 animate-spin"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                                />
+                            </svg>
+                            <div className="ml-1">Đang tạo bài đăng</div>
+                        </div>
+                    )}
+                </div>
             </form>
         </div>
     );

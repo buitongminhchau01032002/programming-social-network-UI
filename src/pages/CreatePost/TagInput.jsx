@@ -1,6 +1,23 @@
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 
+function stringToSlug(str) {
+    // remove accents
+    var from = 'àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ',
+        to = 'aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy';
+    for (var i = 0, l = from.length; i < l; i++) {
+        str = str.replace(RegExp(from[i], 'gi'), to[i]);
+    }
+
+    str = str
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\-]/g, '-')
+        .replace(/-+/g, '-');
+
+    return str;
+}
+
 function TagInput({ categoryId, formik, formikFieldId, formikFieldName, className }) {
     const [tags, setTags] = useState([]);
 
@@ -31,7 +48,7 @@ function TagInput({ categoryId, formik, formikFieldId, formikFieldName, classNam
     function handleChange(e) {
         const name = e.target.value;
         // find id from value
-        const filterResult = tags.filter((tag) => tag.name.includes(name));
+        const filterResult = tags.filter((tag) => stringToSlug(tag.name).includes(stringToSlug(name)));
         setSearch(filterResult);
 
         const correctTag = filterResult.find((tag) => tag.name === name);
@@ -62,8 +79,15 @@ function TagInput({ categoryId, formik, formikFieldId, formikFieldName, classNam
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={className}
-                placeholder="Tag"
+                placeholder="Tìm hoặc tạo tag mới"
             />
+            <div
+                className={clsx('absolute right-3 top-3 text-sm font-medium text-primary-dark', {
+                    hidden: formik.values[formikFieldId] || !formik.values[formikFieldName],
+                })}
+            >
+                Mới
+            </div>
 
             {search.length > 0 && (
                 <div className="absolute left-0 right-0 hidden overflow-hidden rounded border bg-white shadow group-focus-within:block">

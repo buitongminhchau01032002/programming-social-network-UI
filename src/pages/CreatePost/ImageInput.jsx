@@ -6,7 +6,6 @@ function ImageInput({ formik, formikField }) {
     const maxNumber = 69;
     const onChange = (imageList, addUpdateIndex) => {
         // data for submit
-        console.log(imageList, addUpdateIndex);
         const data = imageList.map((image) => image.file);
         formik.setFieldValue(formikField, data);
         setImages(imageList);
