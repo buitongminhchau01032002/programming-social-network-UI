@@ -1,6 +1,5 @@
 // Layouts
 import OnlyHeaderLayout from '../layouts/OnlyHeaderLayout';
-import CommentTemp from '../pages/CommentTemp';
 
 // Pages
 import Home from '../pages/Home';
@@ -10,6 +9,8 @@ import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
 import DetailPost from '../pages/DetailPost';
 import Verify from '../pages/Verify';
+import EditPost from '../pages/EditPost';
+import CommentTemp from '../pages/CommentTemp';
 
 // Public routes
 const publicRoutes = [
@@ -51,6 +52,11 @@ const privateRoutes = [
     {
         path: '/create-post',
         component: CreatePost,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/edit-post/:postId',
+        component: EditPost,
         layout: OnlyHeaderLayout,
     },
 ];

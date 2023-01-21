@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { convert as convertHTMLtoText } from 'html-to-text';
 import CategoryInput from '../../components/PostControl/CategoryInput';
 import PostContentEditor from '../../components/PostControl/PostContentEditor';
@@ -22,13 +22,34 @@ const validationSchema = Yup.object({
     tagName: Yup.string().required('Trường này bắt buộc'),
 });
 
-function CreatePost() {
+function EditPost() {
+    const { postId } = useParams();
     const [loading, setLoading] = useState(false);
-    const showSuccessNoti = () => toast.success('Tạo bài đăng thành công!');
+    const [post, setPost] = useState(null);
+    const showSuccessNoti = () => toast.success('Chỉnh sửa bài đăng thành công!');
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
-    const navigate = useNavigate();
 
-    const createPost = async (values) => {
+    useEffect(() => {
+        fetch('http://localhost:8080/api/posts/' + postId)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) {
+                    console.log(err);
+                    showErorrNoti();
+                    setPost([]);
+                    return;
+                }
+                setPost(data.post);
+            })
+            .catch((err) => {
+                console.log(err);
+                showErorrNoti();
+                setPost([]);
+            });
+    }, []);
+
+    const updatePost = async (values) => {
+        console.log(values);
         try {
             setLoading(true);
             // check and create tag
@@ -54,21 +75,28 @@ function CreatePost() {
             // Get form data
             const formData = new FormData();
             Object.keys(values).forEach((key) => {
+                if (values[key] === formik.initialValues[key]) {
+                    return;
+                }
                 if (key !== 'images') {
                     formData.append(key, values[key]);
                 } else {
-                    if (values.images.length > 0) {
+                    if (!values.images) {
+                        return;
+                    } else if (values.images.length > 0) {
                         values.images.forEach((image) => {
                             formData.append('images', image.file);
                         });
+                    } else {
+                        formData.append('images', null);
                     }
                 }
             });
 
-            // Create post
+            // Update post
 
-            const res = await fetch('http://localhost:8080/api/post', {
-                method: 'POST',
+            const res = await fetch('http://localhost:8080/api/posts/' + postId + '/edit', {
+                method: 'PUT',
                 headers: {
                     Authorization: 'Bearer ' + user?.token,
                 },
@@ -80,7 +108,6 @@ function CreatePost() {
             }
 
             showSuccessNoti();
-            navigate('/');
         } catch (error) {
             console.log(error);
             setLoading(false);
@@ -90,15 +117,16 @@ function CreatePost() {
 
     const formik = useFormik({
         initialValues: {
-            title: '',
-            content: '',
-            categoryId: '',
-            tagId: '',
-            tagName: '',
-            images: [],
+            title: post?.title || '',
+            content: post?.content || '',
+            categoryId: post?.category?._id || '',
+            tagId: post?.tag?._id || '',
+            tagName: post?.tag?.name || '',
+            images: null,
         },
         validationSchema,
-        onSubmit: createPost,
+        enableReinitialize: true,
+        onSubmit: updatePost,
     });
     const user = useSelector(userSelector);
 
@@ -112,7 +140,7 @@ function CreatePost() {
 
     return (
         <div>
-            <h2 className="py-10 text-center text-lg font-bold">Tạo bài đăng</h2>
+            <h2 className="py-10 text-center text-lg font-bold">Chỉnh sửa bài đăng</h2>
 
             <form onSubmit={formik.handleSubmit}>
                 <div className="grid grid-cols-3 gap-7">
@@ -163,7 +191,12 @@ function CreatePost() {
                         </div>
 
                         <div className="mb-4">
-                            <ImageInput formik={formik} formikField="images" />
+                            <ImageInput
+                                formik={formik}
+                                formikField="images"
+                                edit={false}
+                                initImage={post?.images || []}
+                            />
                         </div>
                     </div>
 
@@ -219,21 +252,16 @@ function CreatePost() {
                             }
                         )}
                     >
-                        <span className="pr-1">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="h-6 w-6 pt-0.5"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </span>
-                        Tạo bài đăng
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="h-6 w-6 pr-1"
+                        >
+                            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32l8.4-8.4z" />
+                            <path d="M5.25 5.25a3 3 0 00-3 3v10.5a3 3 0 003 3h10.5a3 3 0 003-3V13.5a.75.75 0 00-1.5 0v5.25a1.5 1.5 0 01-1.5 1.5H5.25a1.5 1.5 0 01-1.5-1.5V8.25a1.5 1.5 0 011.5-1.5h5.25a.75.75 0 000-1.5H5.25z" />
+                        </svg>
+                        Chỉnh sửa bài đăng
                     </button>
 
                     {loading && (
@@ -252,7 +280,7 @@ function CreatePost() {
                                     d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
                                 />
                             </svg>
-                            <div className="ml-1">Đang tạo bài đăng</div>
+                            <div className="ml-1">Đang chỉnh sửa bài đăng</div>
                         </div>
                     )}
                 </div>
@@ -261,4 +289,4 @@ function CreatePost() {
     );
 }
 
-export default CreatePost;
+export default EditPost;
