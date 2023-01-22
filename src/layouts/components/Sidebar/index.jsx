@@ -44,7 +44,11 @@ function Sidebar() {
                 <h2 className="text-xl font-semibold">Chủ đề</h2>
                 <div className="mt-3 flex flex-wrap">
                     {categories?.map((category) => (
-                        <button key={category._id} style={{ background: colorizeCategory(category) }} className="mr-2 mb-2 rounded-md px-5 py-1 font-medium text-white hover:shadow-md">
+                        <button
+                            key={category._id}
+                            style={{ background: colorizeCategory(category) }}
+                            className="mr-2 mb-2 rounded-md px-5 py-1 font-medium text-white hover:shadow-md"
+                        >
                             {category.name || 'Không tên'}
                         </button>
                     ))}
@@ -58,9 +62,14 @@ function Sidebar() {
                 <div className="mt-3 space-y-4">
                     {/* POST */}
                     {posts?.slice(0, 3)?.map((post) => (
-                        <div key={post._id} className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 hover:shadow">
-                            <h2 className="font-bold">{post?.title}</h2>
-                            <p className="mt-1 text-sm leading-4 text-gray-600">{ellipsize(convertHTMLtoText(post?.content, { wordwrap: false }), 100)}</p>
+                        <div
+                            key={post._id}
+                            className="cursor-pointer rounded-md border border-gray-300 px-3 py-2 hover:shadow"
+                        >
+                            <h2 className="font-bold line-clamp-1">{post?.title}</h2>
+                            <p className="mt-1 text-sm leading-4 text-gray-600 line-clamp-1">
+                                {convertHTMLtoText(post?.content, { wordwrap: false })}
+                            </p>
                             <div className="mt-3 flex items-center justify-between">
                                 <UserWithAvatarAndName user={post?.creator} />
                                 <CategoryBadge category={post?.category} />

@@ -1,7 +1,7 @@
 function UserWithAvatarAndName({ user }) {
     return (
-        <div className="group flex cursor-pointer items-center">
-            <div className="h-6 w-6 overflow-hidden rounded-full">
+        <div className="flex cursor-pointer items-center">
+            <div className="peer h-6 w-6 overflow-hidden rounded-full">
                 <img
                     src={
                         user?.avatar ||
@@ -10,7 +10,7 @@ function UserWithAvatarAndName({ user }) {
                     className="h-full w-full object-fill"
                 />
             </div>
-            <p className="ml-2 mb-0.5 text-sm font-medium group-hover:underline">{user?.name}</p>
+            <p className="mb-0.5 pl-2 text-sm font-medium hover:underline peer-hover:underline">{user?.name}</p>
         </div>
     );
 }
