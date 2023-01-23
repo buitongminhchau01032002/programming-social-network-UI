@@ -3,11 +3,35 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../redux/selectors';
 import { userActions } from '../../redux/slices/userSlice';
+import clsx from 'clsx';
 import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
 import Like from './Like';
+import COMMENTS from './temp';
+import CommentCard from './CommentCard';
 
 function CommentTemp() {
     const user = useSelector(userSelector);
+
+    function getCommentsJSX(comments, isRoots = true) {
+        return (
+            <div
+                className={clsx({
+                    'border-l border-primary pl-6': !isRoots,
+                    'mt-6': isRoots,
+                })}
+            >
+                {comments.map((comment, index) => {
+                    return (
+                        <div key={index} className="mt-1 pt-4">
+                            <CommentCard comment={comment} />
+                            {comment.replies && comment.replies.length > 0 && getCommentsJSX(comment.replies, false)}
+                        </div>
+                    );
+                })}
+            </div>
+        );
+    }
+
     return (
         <div className="">
             <div className="border-b py-3">Thanh tab</div>
@@ -32,7 +56,7 @@ function CommentTemp() {
                 )}
 
                 {/* LIST COMMENT */}
-                <div className="mt-6">
+                <div className="mt-6 hidden">
                     {/* GROUP 1 */}
                     <div className="mt-1 pt-4">
                         {/* MAIN 1 */}
@@ -137,6 +161,8 @@ function CommentTemp() {
                         {/* REPLIES 3 */}
                     </div>
                 </div>
+
+                {getCommentsJSX(COMMENTS)}
             </div>
         </div>
     );
