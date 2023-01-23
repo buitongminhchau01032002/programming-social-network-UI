@@ -17,7 +17,7 @@ commnent = {
 
  */
 
-function CommentCard({ comment }) {
+function CommentCard({ comment, onReplayClick }) {
     const user = useSelector(userSelector);
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
@@ -103,7 +103,10 @@ function CommentCard({ comment }) {
                     <p className="ml-1">{comment.replies?.length || 0}</p>
                 </div>
 
-                <button className="invisible flex h-6 items-center rounded-md bg-gray-100 px-3 text-sm hover:bg-gray-200 group-hover:visible">
+                <button
+                    className="invisible flex h-6 items-center rounded-md bg-gray-100 px-3 text-sm hover:bg-gray-200 group-hover:visible"
+                    onClick={() => onReplayClick(comment)}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
