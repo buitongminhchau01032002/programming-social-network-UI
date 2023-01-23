@@ -46,7 +46,9 @@ function Search() {
             setSearchPosts([]);
             return;
         }
-        const newSearchPosts = posts.filter((post) => stringToSlug(post.title).includes(searchInput)).slice(0, 5);
+        const newSearchPosts = posts
+            .filter((post) => stringToSlug(post.title).includes(stringToSlug(searchInput)))
+            .slice(0, 5);
         setSearchPosts(newSearchPosts);
     }, [posts, searchInput]);
 
