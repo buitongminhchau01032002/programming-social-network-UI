@@ -9,9 +9,9 @@ import Like from './Like';
 import COMMENTS from './temp';
 import CommentCard from './CommentCard';
 import ReplyDialog from './ReplyDialog';
+import CreateCommentInPost from './CreateCommentInPost';
 
 function CommentTemp() {
-    const user = useSelector(userSelector);
     const [commentReplaying, setCommentReplaying] = useState(null);
 
     function getCommentsJSX(comments, isRoots = true) {
@@ -35,7 +35,6 @@ function CommentTemp() {
     }
 
     function handleReplayClick(comment) {
-        console.log(comment);
         setCommentReplaying(comment);
     }
 
@@ -47,20 +46,7 @@ function CommentTemp() {
                 {/* COMMENT GROUP */}
                 <div className="py-4">
                     {/* CREATE COMMENT */}
-                    {user ? (
-                        <div className="flex items-center">
-                            <div className="h-9 w-9 overflow-hidden rounded-full">
-                                <img src={user?.avatar} className="h-full w-full object-cover" />
-                            </div>
-                            <input
-                                type="text"
-                                className="ml-4 h-9 flex-1 rounded-md border border-gray-400 px-3 hover:border-gray-500 focus:!border-primary"
-                                placeholder="Viết bình luận ..."
-                            />
-                        </div>
-                    ) : (
-                        <div>Đăng nhập để viêt bình luận</div>
-                    )}
+                    <CreateCommentInPost />
 
                     {getCommentsJSX(COMMENTS)}
                 </div>
