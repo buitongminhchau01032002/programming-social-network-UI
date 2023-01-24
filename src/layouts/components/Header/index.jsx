@@ -10,7 +10,7 @@ function Header() {
     const user = useSelector(userSelector);
 
     return (
-        <header className="fixed flex h-14 w-full items-center justify-between border-b bg-white px-16">
+        <header className="fixed z-10 flex h-14 w-full items-center justify-between border-b bg-white px-16">
             <Link to="/">LOGO</Link>
 
             {/* SEARCH */}

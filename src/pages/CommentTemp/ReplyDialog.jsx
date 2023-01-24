@@ -37,7 +37,7 @@ function ReplayDialog({ comment, onClickOutside, onSubmit }) {
     }, []);
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50" onClick={onClickOutside}>
+        <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/50" onClick={onClickOutside}>
             <form
                 onSubmit={formik.handleSubmit}
                 className="flex min-w-[600px] flex-col space-y-3 rounded border bg-white p-3"
