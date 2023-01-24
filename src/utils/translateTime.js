@@ -1,7 +1,7 @@
 export default function translateTime(moment) {
     moment.updateLocale('vi', {
         relativeTime: {
-            future: 'vào %s',
+            future: '%s sau',
             past: '%s trước',
             s: 'vài giây',
             ss: '%d giây',
