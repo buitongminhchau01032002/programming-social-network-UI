@@ -1,4 +1,9 @@
 import moment from 'moment';
+import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../redux/selectors';
+import translateTime from '../../utils/translateTime';
+import Like from './Like';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import CategoryBadge from '../CategoryBadge/CategoryBadge';
@@ -7,9 +12,68 @@ const avatar = {
     avatar: 'https://picsum.photos/100/100',
 };
 function PostCard({ post }) {
-    const [heart, setHeart] = useState(false);
-    // const [tags, setTags] = useState([post.tag]);
+    translateTime(moment);
+    const user = useSelector(userSelector);
+    const [isOwner, isLiked] = useMemo(() => {
+        let isOwner = false;
+        let isLiked = false;
+        if (!user) {
+            return [isOwner, isLiked];
+        }
+        if (post._id === user._id) {
+            isOwner = true;
+        }
+        if (post.likes.includes(user._id)) {
+            isLiked = true;
+        }
+        return [isOwner, isLiked];
+    }, [user]);
 
+    function handleToggleLike(isLike) {
+        console.log('isLike: ', isLike);
+        if (isLike) {
+            handleLike();
+            console.log('goi handle like', post._id, user.token);
+        } else {
+            handleUnLike();
+            console.log('goi handle unlike', post._id, user.token);
+        }
+        // handle call api like or unlike comment
+    }
+
+    function handleLike() {
+        fetch(' http://localhost:8080/api/posts/' + post._id + '/like', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(post._id, user._id),
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                console.log('Like thanh cong');
+            })
+            .catch((error) => {
+                console.log('deo Like');
+                console.log(error);
+            });
+    }
+    function handleUnLike() {
+        fetch(' http://localhost:8080/api/posts/' + post._id + '/unlike', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(post._id, user._id),
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                console.log('UnLike thanh cong');
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
     return (
         <div className=" mt-4 flex h-full  cursor-pointer flex-col justify-between rounded-lg border border-gray-300 p-3 px-3 py-2 text-left transition  hover:shadow-md ">
             <div className="my-1 flex justify-between ">
@@ -26,7 +90,7 @@ function PostCard({ post }) {
                 </div>
                 <div className="flex">
                     <div className="mr-2 flex cursor-pointer select-none  items-center justify-center ">
-                        {moment.utc(post?.createdAt).locale('vi').startOf('seconds').fromNow()}
+                        {moment(post?.createdAt).startOf('seconds').fromNow()}
                     </div>
                     <button
                         title=""
@@ -44,24 +108,13 @@ function PostCard({ post }) {
             </div>
 
             <h2 className="my-2 cursor-pointer select-none font-bold line-clamp-2 hover:line-clamp-none ">
-                {post?.title} Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu
-                đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài
-                Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề dài Tiêu đề
-                dài Tiêu đề dài{' '}
+                {post?.title}
             </h2>
             <p
                 title="This is the description for this task"
                 className="mt-1 h-full text-sm leading-5  text-gray-600 line-clamp-5 hover:line-clamp-none "
             >
                 {post?.content}
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài
-                Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài Nội dung dài{' '}
             </p>
 
             <div className=" flex w-full items-center py-1   ">
@@ -77,31 +130,23 @@ function PostCard({ post }) {
                 </div>
             </div>
             <div className=" ml-2  flex w-full py-1">
-                <div
-                    onClick={() => {
-                        if (heart) {
-                            console.log('doi');
-                            setHeart(false);
-                        } else setHeart(true);
-                    }}
-                    className="flex px-1 hover:bg-slate-100 hover:underline"
-                >
-                    <button
-                        title="unmark as important"
-                        className={clsx('fa-sharp fa-solid fa-heart mr-1  ', {
-                            '  text-red-500': heart,
-                            '  text-gray-300': !heart,
-                        })}
-                    ></button>
-                    <div className="">{post?.likes?.length}</div>
-                </div>
-                <div className="ml-4 flex px-1 hover:bg-slate-100 hover:underline">
-                    <button
-                        title="unmark as important"
-                        className="fa-regular fa-message mr-1 "
-                        onClick={() => {}}
-                    ></button>
-                    <div>{post?.comments?.length}</div>
+                <Like isLiked={isLiked} numberOfLike={post.likes.length || 0} onToggle={handleToggleLike} />
+                <div className="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="ml-2 h-5 w-5"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
+                        />
+                    </svg>
+                    <p className="ml-1">{post.comments?.length || 0}</p>
                 </div>
             </div>
         </div>
