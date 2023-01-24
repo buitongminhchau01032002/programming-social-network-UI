@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
 import { userSelector } from '../../redux/selectors';
+import translateTime from '../../utils/translateTime';
 import Like from './Like';
 
 /*
@@ -18,6 +19,7 @@ commnent = {
  */
 
 function CommentCard({ comment, onReplayClick }) {
+    translateTime(moment);
     const user = useSelector(userSelector);
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
