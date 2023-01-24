@@ -8,7 +8,7 @@ import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWi
 import Like from './Like';
 import COMMENTS from './temp';
 import CommentCard from './CommentCard';
-import ReplayDialog from './ReplayDialog';
+import ReplyDialog from './ReplyDialog';
 
 function CommentTemp() {
     const user = useSelector(userSelector);
@@ -66,7 +66,7 @@ function CommentTemp() {
                 </div>
             </div>
             {commentReplaying && (
-                <ReplayDialog comment={commentReplaying} onClickOutside={() => setCommentReplaying(null)} />
+                <ReplyDialog comment={commentReplaying} onClickOutside={() => setCommentReplaying(null)} />
             )}
         </>
     );
