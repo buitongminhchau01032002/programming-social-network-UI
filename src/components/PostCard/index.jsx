@@ -29,14 +29,14 @@ function PostCard({ post }) {
         return [isOwner, isLiked];
     }, [user]);
 
+    const [numberLike, setNumberLike] = useState(post.likes.length || 0);
+    useEffect(() => {}, []);
     function handleToggleLike(isLike) {
         console.log('isLike: ', isLike);
         if (isLike) {
             handleLike();
-            console.log('goi handle like', post._id, user.token);
         } else {
             handleUnLike();
-            console.log('goi handle unlike', post._id, user.token);
         }
         // handle call api like or unlike comment
     }
@@ -45,13 +45,14 @@ function PostCard({ post }) {
         fetch(' http://localhost:8080/api/posts/' + post._id + '/like', {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + user?.token,
             },
-            body: JSON.stringify(post._id, user._id),
+            // body: JSON.stringify(post._id, user._id),
         })
             .then((res) => res.json())
             .then((resJson) => {
                 console.log('Like thanh cong');
+                setNumberLike(numberLike + 1);
             })
             .catch((error) => {
                 console.log('deo Like');
@@ -62,13 +63,14 @@ function PostCard({ post }) {
         fetch(' http://localhost:8080/api/posts/' + post._id + '/unlike', {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + user?.token,
             },
-            body: JSON.stringify(post._id, user._id),
+            // body: JSON.stringify(post._id, user._id),
         })
             .then((res) => res.json())
             .then((resJson) => {
                 console.log('UnLike thanh cong');
+                setNumberLike(numberLike - 1);
             })
             .catch((error) => {
                 console.log(error);
@@ -130,7 +132,7 @@ function PostCard({ post }) {
                 </div>
             </div>
             <div className=" ml-2  flex w-full py-1">
-                <Like isLiked={isLiked} numberOfLike={post.likes.length || 0} onToggle={handleToggleLike} />
+                <Like isLiked={isLiked} numberOfLike={numberLike || 0} onToggle={handleToggleLike} />
                 <div className="flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
