@@ -23,7 +23,7 @@ const publicRoutes = [
         component: DetailPost,
     },
     {
-        path: '/comment',
+        path: '/comment/:id',
         component: CommentTemp,
     },
     {

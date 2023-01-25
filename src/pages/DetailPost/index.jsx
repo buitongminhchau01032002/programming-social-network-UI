@@ -1,4 +1,5 @@
 import FullPostCard from '../../components/FullPostCard';
+import PostCard from '../../components/PostCard';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -9,7 +10,7 @@ import Like from './Like';
 
 function DetailPost() {
     const { id } = useParams();
-    const [postok, setPost] = useState({});
+    const [post, setPost] = useState({});
     const user = useSelector(userSelector);
     useEffect(() => {
         getPost();
@@ -20,21 +21,18 @@ function DetailPost() {
             .then((res) => res.json())
             .then((resJson) => {
                 setPost(resJson.post);
-                console.log('res');
-                console.log(resJson.post);
-                console.log('tile');
-                console.log(postok);
             })
-            .catch((error) => {
-                console.log(error);
-                // setPost2([]);
-            });
+            .catch((error) => console.log('error', error));
     }
 
     return (
         <div className="">
             <div className="border-b py-3">Thanh tab</div>
-            <div className="border-b border-gray-400 py-5">{/* <FullPostCard post={post} /> */}</div>
+            <div className="border-b border-gray-400 py-5">
+                {/* {console.log(post)} */}
+                <FullPostCard post={post} />
+                {/* <PostCard post={post} /> */}
+            </div>
             {/* COMMENT GROUP */}
             <div className="py-4">
                 {/* CREATE COMMENT */}

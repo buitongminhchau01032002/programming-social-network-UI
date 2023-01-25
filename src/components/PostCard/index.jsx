@@ -24,14 +24,14 @@ function PostCard({ post }) {
         if (post._id === user._id) {
             isOwner = true;
         }
-        if (post.likes.includes(user._id)) {
+        if (post.likes?.includes(user._id)) {
             isLiked = true;
         }
         return [isOwner, isLiked];
     }, [user]);
 
-    const [numberLike, setNumberLike] = useState(post.likes.length || 0);
-    useEffect(() => {}, []);
+    const [numberLike, setNumberLike] = useState(post.likes?.length || 0);
+    // useEffect(() => {}, []);
     function handleToggleLike(isLike) {
         console.log('isLike: ', isLike);
         if (isLike) {
@@ -48,7 +48,6 @@ function PostCard({ post }) {
             headers: {
                 Authorization: 'Bearer ' + user?.token,
             },
-            // body: JSON.stringify(post._id, user._id),
         })
             .then((res) => res.json())
             .then((resJson) => {
@@ -66,7 +65,6 @@ function PostCard({ post }) {
             headers: {
                 Authorization: 'Bearer ' + user?.token,
             },
-            // body: JSON.stringify(post._id, user._id),
         })
             .then((res) => res.json())
             .then((resJson) => {
@@ -134,7 +132,7 @@ function PostCard({ post }) {
             </div>
             <div className=" ml-2  flex w-full py-1">
                 <Like isLiked={isLiked} numberOfLike={numberLike || 0} onToggle={handleToggleLike} />
-                <Link to={'/detailPost/' + post._id}>
+                <Link to={'/comment/' + post._id}>
                     <div className="flex items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

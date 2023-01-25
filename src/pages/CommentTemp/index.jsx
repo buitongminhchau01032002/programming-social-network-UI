@@ -1,6 +1,7 @@
-import PostCard from '../../components/PostCard';
+import FullPostCard from '../../components/FullPostCard';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { userSelector } from '../../redux/selectors';
 import { userActions } from '../../redux/slices/userSlice';
 import clsx from 'clsx';
@@ -38,10 +39,28 @@ function CommentTemp() {
         setCommentReplaying(comment);
     }
 
+    const { id } = useParams();
+    const [post, setPost] = useState({});
+    const user = useSelector(userSelector);
+    useEffect(() => {
+        getPost();
+    }, [post]);
+
+    function getPost() {
+        fetch('http://localhost:8080/api/posts/' + id)
+            .then((res) => res.json())
+            .then((resJson) => {
+                setPost(resJson.post);
+            })
+            .catch((error) => console.log('error', error));
+    }
+
     return (
         <>
             <div className="">
-                <div className="border-b border-gray-400 py-5">POST CONTENT</div>
+                <div className="border-b border-gray-400 py-5">
+                    <FullPostCard post={post} />
+                </div>
 
                 {/* COMMENT GROUP */}
                 <div className="py-4">
