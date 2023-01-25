@@ -19,7 +19,7 @@ const publicRoutes = [
         component: Home,
     },
     {
-        path: '/detailPost',
+        path: '/detailPost/:id',
         component: DetailPost,
     },
     {

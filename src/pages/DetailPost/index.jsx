@@ -1,5 +1,6 @@
 import FullPostCard from '../../components/FullPostCard';
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../redux/selectors';
 import { userActions } from '../../redux/slices/userSlice';
@@ -7,34 +8,33 @@ import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWi
 import Like from './Like';
 
 function DetailPost() {
-    // const { id } = useParams();
-    const [posts, setPosts] = useState([]);
-    const [post, setPost] = useState({});
+    const { id } = useParams();
+    const [postok, setPost] = useState({});
     const user = useSelector(userSelector);
     useEffect(() => {
-        callApi();
+        getPost();
     }, []);
 
-    function callApi() {
-        fetch('http://localhost:8080/api/posts')
+    function getPost() {
+        fetch('http://localhost:8080/api/posts/' + id)
             .then((res) => res.json())
             .then((resJson) => {
-                setPosts(resJson.posts);
-                setPost(posts.shift());
-                console.log(post);
+                setPost(resJson.post);
+                console.log('res');
+                console.log(resJson.post);
+                console.log('tile');
+                console.log(postok);
             })
             .catch((error) => {
                 console.log(error);
-                setPosts([]);
+                // setPost2([]);
             });
     }
 
     return (
         <div className="">
             <div className="border-b py-3">Thanh tab</div>
-            <div className="border-b border-gray-400 py-5">
-                <FullPostCard post={post} />
-            </div>
+            <div className="border-b border-gray-400 py-5">{/* <FullPostCard post={post} /> */}</div>
             {/* COMMENT GROUP */}
             <div className="py-4">
                 {/* CREATE COMMENT */}
