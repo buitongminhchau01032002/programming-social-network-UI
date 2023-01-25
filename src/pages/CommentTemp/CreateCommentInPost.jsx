@@ -38,7 +38,7 @@ function CreateCommentInPost() {
     }, []);
 
     const setTouchContent = useCallback(() => {
-        formik.setTouched({ ...formik.touched, content: true });
+        formik.setFieldTouched('content', true);
     }, []);
     return (
         <>

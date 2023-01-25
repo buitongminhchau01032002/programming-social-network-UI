@@ -33,7 +33,7 @@ function ReplayDialog({ comment, onClickOutside, onSubmit }) {
     }, []);
 
     const setTouchContent = useCallback(() => {
-        formik.setTouched({ ...formik.touched, content: true });
+        formik.setFieldTouched('content', true);
     }, []);
 
     return (
