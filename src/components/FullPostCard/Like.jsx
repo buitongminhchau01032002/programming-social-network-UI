@@ -3,12 +3,10 @@ import { useState } from 'react';
 
 function Like({ isLiked = false, onToggle, numberOfLike = 0, onNumberOfLikeClick }) {
     const [liked, setLiked] = useState(isLiked);
-    const [number, setNumber] = useState(numberOfLike);
 
     function handleToggle() {
-        setLiked(!liked);
         if (onToggle) {
-            onToggle(!liked);
+            if (onToggle(!liked) == true) setLiked(!liked);
         }
     }
 

@@ -9,12 +9,19 @@ import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import CategoryBadge from '../CategoryBadge/CategoryBadge';
 import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndName';
+import { Markup } from 'interweave';
+import { toast } from 'react-toastify';
 const avatar = {
     avatar: 'https://picsum.photos/100/100',
 };
 function PostCard({ post }) {
     translateTime(moment);
     const user = useSelector(userSelector);
+    const showNonLogin = () => toast.error('Hãy đăng nhập để thực hiện thao tác!');
+    const showLikePost = () => toast.success('Bạn đã thả tim bài viết!');
+    const showUnLikePost = () => toast.success('Bạn đã thả tim bài viết!');
+    const showSuccessNoti = () => toast.success('Chỉnh sửa bài đăng thành công!');
+    const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;
@@ -29,17 +36,23 @@ function PostCard({ post }) {
         }
         return [isOwner, isLiked];
     }, [user]);
+    const [liked, setLiked] = useState(isLiked);
 
     const [numberLike, setNumberLike] = useState(post.likes?.length || 0);
     // useEffect(() => {}, []);
     function handleToggleLike(isLike) {
         console.log('isLike: ', isLike);
-        if (isLike) {
+        if (!user) {
+            showNonLogin();
+            return false;
+        } else if (isLike) {
             handleLike();
+            return true;
         } else {
             handleUnLike();
+            showUnLikePost();
+            return true;
         }
-        // handle call api like or unlike comment
     }
 
     function handleLike() {
@@ -51,7 +64,8 @@ function PostCard({ post }) {
         })
             .then((res) => res.json())
             .then((resJson) => {
-                console.log('Like thanh cong');
+                showLikePost();
+                setLiked(!liked);
                 setNumberLike(numberLike + 1);
             })
             .catch((error) => {
@@ -69,6 +83,7 @@ function PostCard({ post }) {
             .then((res) => res.json())
             .then((resJson) => {
                 console.log('UnLike thanh cong');
+                setLiked(!liked);
                 setNumberLike(numberLike - 1);
             })
             .catch((error) => {
@@ -107,15 +122,16 @@ function PostCard({ post }) {
                     </button>
                 </div>
             </div>
-
-            <h2 className="my-2 cursor-pointer select-none font-bold line-clamp-2 hover:line-clamp-none ">
-                {post?.title}
-            </h2>
+            <Link to={'/detailPost/' + post._id}>
+                <h2 className="my-2 cursor-pointer select-none font-bold line-clamp-2 hover:line-clamp-none ">
+                    <Markup content={post?.title}></Markup>
+                </h2>
+            </Link>
             <p
                 title="This is the description for this task"
                 className="mt-1 h-full text-sm leading-5  text-gray-600 line-clamp-5 hover:line-clamp-none "
             >
-                {post?.content}
+                <Markup content={post?.content}></Markup>
             </p>
 
             <div className=" flex w-full items-center py-1   ">
@@ -131,8 +147,8 @@ function PostCard({ post }) {
                 </div>
             </div>
             <div className=" ml-2  flex w-full py-1">
-                <Like isLiked={isLiked} numberOfLike={numberLike || 0} onToggle={handleToggleLike} />
-                <Link to={'/comment/' + post._id}>
+                <Like like={liked} isLiked={isLiked} numberOfLike={numberLike || 0} onToggle={handleToggleLike} />
+                <Link to={'/detailPost/' + post._id}>
                     <div className="flex items-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
