@@ -34,7 +34,7 @@ function EditPost() {
             .then((res) => res.json())
             .then((data) => {
                 if (data.error) {
-                    console.log(err);
+                    console.log(error);
                     showErorrNoti();
                     setPost([]);
                     return;
@@ -108,6 +108,7 @@ function EditPost() {
             }
 
             showSuccessNoti();
+            setLoading(false);
         } catch (error) {
             console.log(error);
             setLoading(false);
@@ -135,7 +136,7 @@ function EditPost() {
     }, []);
 
     const setTouchContent = useCallback(() => {
-        formik.setTouched({ ...formik.touched, content: true });
+        formik.setFieldTouched('content', true);
     }, []);
 
     return (

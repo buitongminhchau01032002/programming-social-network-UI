@@ -96,12 +96,6 @@ function Header() {
                     >
                         Đăng nhập
                     </Link>
-                    <Link
-                        to="/sample-login"
-                        className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"
-                    >
-                        Đăng nhập sample
-                    </Link>
                 </div>
             )}
         </header>
