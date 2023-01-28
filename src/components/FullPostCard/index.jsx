@@ -25,6 +25,7 @@ function FullPostCard({ post }) {
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;
+        console.log(post._id);
         if (!user) {
             return [isOwner, isLiked];
         }
@@ -41,8 +42,7 @@ function FullPostCard({ post }) {
     const [numberLike, setNumberLike] = useState(post.likes?.length || 20);
     useEffect(() => {
         setNumberLike(post.likes?.length);
-        console.log('a');
-    }, [post.likes?.length]);
+    }, [post]);
     function handleToggleLike(isLike) {
         console.log('isLike: ', isLike);
         if (!user) {
@@ -68,7 +68,6 @@ function FullPostCard({ post }) {
             .then((res) => res.json())
             .then((resJson) => {
                 showLikePost();
-
                 setLiked(!liked);
                 setNumberLike(numberLike + 1);
             })

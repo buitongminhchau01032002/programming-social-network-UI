@@ -25,6 +25,7 @@ function PostCard({ post }) {
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;
+        console.log(post.likes);
         if (!user) {
             return [isOwner, isLiked];
         }

@@ -22,16 +22,17 @@ function DetailPost() {
             .then((resJson) => {
                 setPost(resJson.post);
             })
-            .catch((error) => console.log('error', error));
+            .catch((error) => {
+                console.log('error', error);
+                setPost({});
+            });
     }
 
     return (
         <div className="">
             <div className="border-b py-3">Thanh tab</div>
             <div className="border-b border-gray-400 py-5">
-                {/* {console.log(post)} */}
                 <FullPostCard post={post} />
-                {/* <PostCard post={post} /> */}
             </div>
             {/* COMMENT GROUP */}
             <div className="py-4">
