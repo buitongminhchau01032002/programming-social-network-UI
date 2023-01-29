@@ -9,23 +9,25 @@ import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import CategoryBadge from '../CategoryBadge/CategoryBadge';
 import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndName';
-import { Markup } from 'interweave';
 import { toast } from 'react-toastify';
+import { Markup } from 'interweave';
 const avatar = {
     avatar: 'https://picsum.photos/100/100',
 };
-function PostCard({ post }) {
+function PostCartSection({ postId }) {
     translateTime(moment);
     const user = useSelector(userSelector);
+
     const showNonLogin = () => toast.error('Hãy đăng nhập để thực hiện thao tác!');
     const showLikePost = () => toast.success('Bạn đã thả tim bài viết!');
     const showUnLikePost = () => toast.success('Bạn đã thả tim bài viết!');
     const showSuccessNoti = () => toast.success('Chỉnh sửa bài đăng thành công!');
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
+    const [post, setPost] = useState([]);
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;
-        console.log(post.likes);
+        console.log(post._id);
         if (!user) {
             return [isOwner, isLiked];
         }
@@ -34,13 +36,33 @@ function PostCard({ post }) {
         }
         if (post.likes?.includes(user._id)) {
             isLiked = true;
+            console.log('isLiked: ', isLiked);
         }
         return [isOwner, isLiked];
-    }, [user]);
+    }, [post.likes]);
+    const [numberLike, setNumberLike] = useState(post.likes?.length || 20);
     const [liked, setLiked] = useState(isLiked);
-
-    const [numberLike, setNumberLike] = useState(post.likes?.length || 0);
-    // useEffect(() => {}, []);
+    useEffect(() => {
+        getPost();
+        setNumberLike(post.likes?.length);
+        setLiked(liked);
+    }, [post.likes?.length, liked, isLiked]);
+    function getPost() {
+        fetch('http://localhost:8080/api/posts/' + postId)
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.error) {
+                    console.log(resJson.error);
+                    setPost([]);
+                    return;
+                }
+                setPost(resJson.post);
+            })
+            .catch((error) => {
+                console.log('error', error);
+                setPost([]);
+            });
+    }
     function handleToggleLike(isLike) {
         console.log('isLike: ', isLike);
         if (!user) {
@@ -67,7 +89,6 @@ function PostCard({ post }) {
             .then((resJson) => {
                 showLikePost();
                 setLiked(!liked);
-                setNumberLike(numberLike + 1);
             })
             .catch((error) => {
                 console.log('deo Like');
@@ -85,7 +106,6 @@ function PostCard({ post }) {
             .then((resJson) => {
                 console.log('UnLike thanh cong');
                 setLiked(!liked);
-                setNumberLike(numberLike - 1);
             })
             .catch((error) => {
                 console.log(error);
@@ -123,15 +143,12 @@ function PostCard({ post }) {
                     </button>
                 </div>
             </div>
-            <Link to={'/detailPost/' + post._id}>
-                <h2 className="my-2 cursor-pointer select-none font-bold line-clamp-2 hover:line-clamp-none ">
-                    <Markup content={post?.title}></Markup>
-                </h2>
-            </Link>
-            <p
-                title="This is the description for this task"
-                className="mt-1 h-full text-sm leading-5  text-gray-600 line-clamp-5 hover:line-clamp-none "
-            >
+
+            <h2 className="my-2 cursor-pointer select-none font-bold  ">
+                <Markup content={post?.title}></Markup>
+            </h2>
+
+            <p title="This is the description for this task" className="mt-1 h-full text-sm leading-5  text-gray-600  ">
                 <Markup content={post?.content}></Markup>
             </p>
 
@@ -148,29 +165,28 @@ function PostCard({ post }) {
                 </div>
             </div>
             <div className=" ml-2  flex w-full py-1">
-                <Like like={liked} isLiked={isLiked} numberOfLike={numberLike || 0} onToggle={handleToggleLike} />
-                <Link to={'/comment/' + post._id}>
-                    <div className="flex items-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="ml-2 h-5 w-5"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                            />
-                        </svg>
-                        <p className="ml-1">{post.comments?.length || 0}</p>
-                    </div>
-                </Link>
+                <Like isLiked={isLiked} numberOfLike={post.likes?.length || 30} onToggle={handleToggleLike} />
+
+                <div className="flex items-center">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="ml-2 h-5 w-5"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
+                        />
+                    </svg>
+                    <p className="ml-1">{post.comments?.length || 0}</p>
+                </div>
             </div>
         </div>
     );
 }
 
-export default PostCard;
+export default PostCartSection;
