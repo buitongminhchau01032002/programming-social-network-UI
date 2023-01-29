@@ -7,8 +7,8 @@ import moment from 'moment';
 import * as Yup from 'yup';
 import { convert as convertHTMLtoText } from 'html-to-text';
 import { useCallback, useRef, useState } from 'react';
-import PostContentEditor from '../../components/PostControl/PostContentEditor';
-import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
+import PostContentEditor from '../PostControl/PostContentEditor';
+import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndName';
 import clsx from 'clsx';
 
 const validationSchema = Yup.object({

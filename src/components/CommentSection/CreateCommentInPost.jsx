@@ -7,9 +7,10 @@ import moment from 'moment';
 import * as Yup from 'yup';
 import { convert as convertHTMLtoText } from 'html-to-text';
 import { useCallback, useRef, useState } from 'react';
-import PostContentEditor from '../../components/PostControl/PostContentEditor';
-import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
+import PostContentEditor from '../PostControl/PostContentEditor';
+import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndName';
 import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
 const BUTTONS = ['bold', 'italic', 'underline', 'link', 'ul', 'eraser'];
 
@@ -102,7 +103,15 @@ function CreateCommentInPost({ postId, onCreatedComment }) {
                     </div>
                 </form>
             ) : (
-                <div>Đăng nhập để viêt bình luận</div>
+                <div className="flex flex-col items-center justify-center">
+                    <p className="mb-2 font-semibold">Đăng nhập để viêt bình luận</p>
+                    <Link
+                        to="/login"
+                        className="flex h-9 min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"
+                    >
+                        Đăng nhập
+                    </Link>
+                </div>
             )}
         </>
     );

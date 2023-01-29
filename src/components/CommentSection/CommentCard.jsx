@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
+import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndName';
 import { userSelector } from '../../redux/selectors';
 import translateTime from '../../utils/translateTime';
 import Like from './Like';
@@ -39,7 +39,6 @@ function CommentCard({ comment, onReplayClick, onEditClick, onChangeComment }) {
         })
             .then((res) => res.json())
             .then((result) => {
-                console.log(result);
                 onChangeComment && onChangeComment();
             })
             .catch((error) => {
