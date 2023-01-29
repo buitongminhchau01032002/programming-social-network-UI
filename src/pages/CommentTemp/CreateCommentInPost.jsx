@@ -47,6 +47,7 @@ function CreateCommentInPost({ postId, onCreatedComment }) {
                     return;
                 }
                 onCreatedComment && onCreatedComment();
+                formik.resetForm();
             })
             .catch((err) => {
                 console.log(err);
@@ -60,6 +61,7 @@ function CreateCommentInPost({ postId, onCreatedComment }) {
     const setTouchContent = useCallback(() => {
         formik.setFieldTouched('content', true);
     }, []);
+
     return (
         <>
             {user ? (

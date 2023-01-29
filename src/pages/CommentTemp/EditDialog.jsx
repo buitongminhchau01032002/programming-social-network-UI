@@ -18,25 +18,23 @@ const validationSchema = Yup.object({
     }),
 });
 
-function ReplayDialog({ comment, onClickOutside, postId, onCreatedComment }) {
+function EditDialog({ comment, onClickOutside, onEditedComment }) {
     const user = useSelector(userSelector);
 
     const [loading, setLoading] = useState(false);
 
-    const formik = useFormik({ initialValues: { content: '' }, validationSchema, onSubmit: handleSubmit });
+    const formik = useFormik({ initialValues: { content: comment.content }, validationSchema, onSubmit: handleSubmit });
 
     function handleSubmit(values) {
         setLoading(true);
-        fetch('http://localhost:8080/api/comment', {
-            method: 'POST',
+        fetch('http://localhost:8080/api/comment/' + comment._id, {
+            method: 'PUT',
             headers: {
                 Authorization: 'Bearer ' + user?.token,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 content: values.content,
-                postId,
-                parentCommentId: comment._id,
             }),
         })
             .then((res) => res.json())
@@ -45,7 +43,7 @@ function ReplayDialog({ comment, onClickOutside, postId, onCreatedComment }) {
                     console.log(data.error);
                     return;
                 }
-                onCreatedComment && onCreatedComment();
+                onEditedComment && onEditedComment();
                 formik.resetForm();
                 onClickOutside();
             })
@@ -108,11 +106,11 @@ function ReplayDialog({ comment, onClickOutside, postId, onCreatedComment }) {
                         }
                     )}
                 >
-                    Trả lời bình luận
+                    Chỉnh sửa bình luận
                 </button>
             </form>
         </div>
     );
 }
 
-export default ReplayDialog;
+export default EditDialog;

@@ -18,7 +18,7 @@ commnent = {
 
  */
 
-function CommentCard({ comment, onReplayClick }) {
+function CommentCard({ comment, onReplayClick, onEditClick }) {
     translateTime(moment);
     const user = useSelector(userSelector);
     const [isOwner, isLiked] = useMemo(() => {
@@ -49,7 +49,7 @@ function CommentCard({ comment, onReplayClick }) {
                 </div>
                 <div className="flex items-center space-x-2">
                     {isOwner && (
-                        <button className="text-gray-600 hover:text-primary">
+                        <button className="text-gray-600 hover:text-primary" onClick={() => onEditClick(comment)}>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
