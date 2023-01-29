@@ -31,6 +31,7 @@ function CommentTemp() {
                                 comment={comment}
                                 onEditClick={(cmt) => setCommentEditing(cmt)}
                                 onReplayClick={(cmt) => setCommentReplaying(cmt)}
+                                onChangeComment={getComments}
                             />
                             {comment.replies && comment.replies.length > 0 && getCommentsJSX(comment.replies, false)}
                         </div>
@@ -53,6 +54,7 @@ function CommentTemp() {
                     setComments([]);
                     return;
                 }
+                console.log(resJson.comments);
                 setComments(resJson.comments);
             })
             .catch((error) => {

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import moment from 'moment';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
@@ -18,27 +19,43 @@ commnent = {
 
  */
 
-function CommentCard({ comment, onReplayClick, onEditClick }) {
+function CommentCard({ comment, onReplayClick, onEditClick, onChangeComment }) {
     translateTime(moment);
     const user = useSelector(userSelector);
     const [isOwner, isLiked] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;
+
         if (!user) {
             return [isOwner, isLiked];
         }
+
         if (comment.author._id === user._id) {
             isOwner = true;
         }
-        if (comment.likes.includes(user._id)) {
+
+        const indexLike = comment.likes.findIndex((like) => like._id === user?._id);
+        if (indexLike !== -1) {
             isLiked = true;
         }
         return [isOwner, isLiked];
     }, [user]);
 
     function handleToggleLike(isLike) {
-        console.log('isLike: ', isLike);
-        // handle call api like or unlike comment
+        fetch('http://localhost:8080/api/comment/toggle-like/' + comment._id, {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + user?.token,
+            },
+        })
+            .then((res) => res.json())
+            .then((result) => {
+                console.log(result);
+                onChangeComment && onChangeComment();
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
     }
     return (
         <div className="group">
@@ -86,7 +103,13 @@ function CommentCard({ comment, onReplayClick, onEditClick }) {
             </div>
             <div className="text-editor mt-2 text-gray-600" dangerouslySetInnerHTML={{ __html: comment.content }}></div>
             <div className="mt-1 flex items-center space-x-4">
-                <Like isLiked={isLiked} numberOfLike={comment.like?.length || 0} onToggle={handleToggleLike} />
+                <div
+                    className={clsx({
+                        'pointer-events-none': !user,
+                    })}
+                >
+                    <Like isLiked={isLiked} numberOfLike={comment.likes?.length || 0} onToggle={handleToggleLike} />
+                </div>
                 <div className="flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -105,26 +128,28 @@ function CommentCard({ comment, onReplayClick, onEditClick }) {
                     <p className="ml-1">{comment.replies?.length || 0}</p>
                 </div>
 
-                <button
-                    className="invisible flex h-6 items-center rounded-md bg-gray-100 px-3 text-sm hover:bg-gray-200 group-hover:visible"
-                    onClick={() => onReplayClick(comment)}
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="h-4 w-4"
+                {user && (
+                    <button
+                        className="invisible flex h-6 items-center rounded-md bg-gray-100 px-3 text-sm hover:bg-gray-200 group-hover:visible"
+                        onClick={() => onReplayClick(comment)}
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
-                        />
-                    </svg>
-                    <p className="ml-1">Trả lời</p>
-                </button>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="h-4 w-4"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+                            />
+                        </svg>
+                        <p className="ml-1">Trả lời</p>
+                    </button>
+                )}
             </div>
         </div>
     );
