@@ -84,7 +84,7 @@ function CommentCard({ comment, onReplayClick }) {
                     </button>
                 </div>
             </div>
-            <p className="mt-2 text-gray-600">{comment.content}</p>
+            <div className="text-editor mt-2 text-gray-600" dangerouslySetInnerHTML={{ __html: comment.content }}></div>
             <div className="mt-1 flex items-center space-x-4">
                 <Like isLiked={isLiked} numberOfLike={comment.like?.length || 0} onToggle={handleToggleLike} />
                 <div className="flex items-center">

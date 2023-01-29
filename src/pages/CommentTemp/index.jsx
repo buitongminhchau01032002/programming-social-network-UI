@@ -14,6 +14,7 @@ import CreateCommentInPost from './CreateCommentInPost';
 
 function CommentTemp() {
     const [commentReplaying, setCommentReplaying] = useState(null);
+    const [comments, setComments] = useState([]);
 
     function getCommentsJSX(comments, isRoots = true) {
         return (
@@ -44,7 +45,8 @@ function CommentTemp() {
     const user = useSelector(userSelector);
     useEffect(() => {
         getPost();
-    }, [post]);
+        getComments();
+    }, []);
 
     function getPost() {
         fetch('http://localhost:8080/api/posts/' + id)
@@ -53,6 +55,23 @@ function CommentTemp() {
                 setPost(resJson.post);
             })
             .catch((error) => console.log('error', error));
+    }
+
+    function getComments() {
+        fetch('http://localhost:8080/api/comment/' + id)
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.error) {
+                    console.log(resJson.error);
+                    setComments([]);
+                    return;
+                }
+                setComments(resJson.comments);
+            })
+            .catch((error) => {
+                console.log('error', error);
+                setComments([]);
+            });
     }
 
     return (
@@ -65,9 +84,9 @@ function CommentTemp() {
                 {/* COMMENT GROUP */}
                 <div className="py-4">
                     {/* CREATE COMMENT */}
-                    <CreateCommentInPost />
+                    <CreateCommentInPost postId={id} onCreatedComment={getComments} />
 
-                    {getCommentsJSX(COMMENTS)}
+                    {getCommentsJSX(comments)}
                 </div>
             </div>
             {commentReplaying && (

@@ -17,7 +17,7 @@
         @apply text-primary-dark underline decoration-primary-dark;
     }
     .text-editor ul {
-        @apply list-disc p-5;
+        @apply list-disc px-5;
     }
     .btn {
         @apply flex items-center justify-center rounded text-white;

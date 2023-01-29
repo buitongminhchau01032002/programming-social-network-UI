@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
     }),
 });
 
-function CreateCommentInPost() {
+function CreateCommentInPost({ postId, onCreatedComment }) {
     const user = useSelector(userSelector);
 
     const [loading, setLoading] = useState(false);
@@ -29,8 +29,28 @@ function CreateCommentInPost() {
 
     function handleSubmit(values) {
         // onClickOutside();
-        console.log(values.content);
-        // handle create comment
+        fetch('http://localhost:8080/api/comment', {
+            method: 'POST',
+            headers: {
+                Authorization: 'Bearer ' + user?.token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                content: values.content,
+                postId,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.error) {
+                    console.log(data.error);
+                    return;
+                }
+                onCreatedComment && onCreatedComment();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     const handleChangeContent = useCallback((newContent) => {
