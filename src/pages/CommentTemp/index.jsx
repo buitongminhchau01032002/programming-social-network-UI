@@ -15,6 +15,7 @@ function CommentTemp() {
     const [commentEditing, setCommentEditing] = useState(null);
     const [comments, setComments] = useState([]);
     const { id } = useParams();
+    const user = useSelector(userSelector);
 
     function getCommentsJSX(comments, isRoots = true) {
         return (
@@ -54,7 +55,6 @@ function CommentTemp() {
                     setComments([]);
                     return;
                 }
-                console.log(resJson.comments);
                 setComments(resJson.comments);
             })
             .catch((error) => {

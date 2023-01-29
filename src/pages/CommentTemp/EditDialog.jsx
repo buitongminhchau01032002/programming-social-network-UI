@@ -70,7 +70,7 @@ function EditDialog({ comment, onClickOutside, onEditedComment }) {
                 className="flex min-w-[600px] flex-col space-y-3 rounded border bg-white p-3"
                 onClick={(e) => e.stopPropagation()}
             >
-                <p className="text-center text-lg font-semibold">Trả lời bình luận</p>
+                <p className="text-center text-lg font-semibold">Chỉnh sửa bình luận</p>
                 {/* <div className="rounded ">
                     <div className="flex items-center">
                         <UserWithAvatarAndName user={comment.author} />
