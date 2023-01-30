@@ -9,7 +9,7 @@ function AuthLayout({ children }) {
     const navigate = useNavigate();
     useEffect(() => {
         if (user === null) {
-            navigate('/sample-login');
+            navigate('/login');
         }
     }, [user, location.pathname]);
     return <>{children}</>;
