@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { userSelector } from '../../redux/selectors/userSelector';
 import Avatar from './Avatar';
+import FollowButton from './FollowButton';
+import Following from './Following';
+import Posts from './Posts';
 
 function Profile() {
     const currentUser = useSelector(userSelector);
@@ -43,12 +46,27 @@ function Profile() {
             {/* AVATAR AND INFOR  */}
             <div className="mt-4 grid grid-cols-3 gap-7">
                 {/* AVATAR */}
-                <div className="col-span-1 flex flex-col items-center justify-center">
+                <div className="col-span-1 flex flex-col items-center justify-center space-y-2">
                     <Avatar user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
+                    <div className="font-semibold">{user?.role?.name}</div>
+                    <FollowButton user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
                 </div>
 
                 {/* INFOR  */}
                 <div className="col-span-2">ầdsfdsaf</div>
+            </div>
+
+            {/* BOTTOM GROUP */}
+            <div className="mt-7 grid grid-cols-3 gap-7">
+                {/* POST */}
+                <div className="col-span-2">
+                    <Posts user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
+                </div>
+
+                {/* FOLLOWING */}
+                <div className="col-span-1">
+                    <Following user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
+                </div>
             </div>
         </div>
     );
