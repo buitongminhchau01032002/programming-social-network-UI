@@ -47,9 +47,12 @@ function Profile() {
             {/* AVATAR AND INFOR  */}
             <div className="mt-4 grid grid-cols-3 gap-7">
                 {/* AVATAR */}
-                <div className="col-span-1 flex flex-col items-center justify-center space-y-2">
+                <div className="col-span-1 flex flex-col items-center space-y-2">
                     <Avatar user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
-                    <div className="font-semibold">{user?.role?.name}</div>
+                    <div className="flex flex-col items-center">
+                        <div className="">{user?.email}</div>
+                        <div className="font-semibold">{user?.role?.name}</div>
+                    </div>
                     <FollowButton user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
                 </div>
 
