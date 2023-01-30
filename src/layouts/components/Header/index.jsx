@@ -75,6 +75,15 @@ function Header() {
                                     </div>
                                 </Link>
 
+                                {user?.role?.name === 'admin' && (
+                                    <Link
+                                        to="/manage-member"
+                                        className="flex justify-center rounded-md bg-gray-100 py-2 font-semibold hover:bg-gray-200"
+                                    >
+                                        Quản lý thành viên
+                                    </Link>
+                                )}
+
                                 <button
                                     onClick={() => dispatch(userActions.logout())}
                                     className="flex h-9 w-full min-w-[120px] items-center justify-center rounded-md bg-primary px-5 text-sm font-medium text-white transition hover:bg-primary-dark"

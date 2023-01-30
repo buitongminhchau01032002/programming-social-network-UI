@@ -82,7 +82,7 @@ function ManageMember() {
 
     return (
         <div>
-            <h2 className="py-10 text-center text-lg font-bold">Quản lý tài khoản người dùng</h2>
+            <h2 className="py-10 text-center text-lg font-bold">Quản lý thành viên</h2>
             <div className="grid grid-cols-2 gap-16">
                 <div>
                     <h3 className="text-lg font-semibold">Tất cả thành viên</h3>
