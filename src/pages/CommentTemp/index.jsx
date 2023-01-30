@@ -8,7 +8,7 @@ function CommentTemp() {
     return (
         <div>
             <div>POST CONTENT</div>
-            <PostCartSection postId={id} />
+            <PostCartSection postId={id} full={false} />
 
             {/* Add comment to page */}
             <CommentSection postId={id} />

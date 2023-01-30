@@ -1,6 +1,7 @@
-import PostCard from '../../components/PostCard';
+import PostCardSection from '../../components/PostCardSection';
 import { useState, useEffect } from 'react';
 import TabBar from './TabBar';
+import _, { compact } from 'lodash';
 
 const TABS = [
     { id: 1, name: 'Tất cả' },
@@ -10,16 +11,44 @@ const TABS = [
 
 function Home() {
     const [posts, setPosts] = useState([]);
+    const [page, setPage] = useState(1);
+    console.log('page ne ba', page);
     const [selectedTab, setSelectedTab] = useState(TABS[0]);
+
     useEffect(() => {
-        getPosts();
-        console.log(posts);
+        getPosts(page);
     }, []);
-    function getPosts() {
-        fetch('http://localhost:8080/api/posts')
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+            if (scrollTop + clientHeight >= scrollHeight - 0.5) {
+                fetch('http://localhost:8080/api/posts/?limit=3&page=' + page)
+                    .then((res) => res.json())
+                    .then((resJson) => {
+                        console.log('Gọi thêm api');
+                        setPosts(posts.concat(resJson.posts));
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setPosts([]);
+                    });
+            }
+        });
+
+        return () => {
+            window.removeEventListener('scroll', () => {
+                setPage(page + 1);
+            });
+        };
+    }, []);
+
+    function getPosts(page) {
+        console.log('goi lại');
+        fetch('http://localhost:8080/api/posts/?limit=3&page=' + page)
             .then((res) => res.json())
             .then((resJson) => {
                 setPosts(resJson.posts);
+                if (page == 1   ) setPage(page + 1);
             })
             .catch((error) => {
                 console.log(error);
@@ -42,7 +71,7 @@ function Home() {
             {/* Danh sách post */}
             <div>
                 {posts?.map((post, index) => (
-                    <PostCard key={index} post={post} />
+                    <PostCardSection key={index} postInit={post} full={true} />
                 ))}
             </div>
         </div>
