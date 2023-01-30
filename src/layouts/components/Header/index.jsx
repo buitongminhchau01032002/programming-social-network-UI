@@ -42,7 +42,7 @@ function Header() {
 
                     <div className="flex items-center space-x-1">
                         <button className="h-9 w-9 overflow-hidden rounded-full ring-primary hover:ring-2">
-                            <img className="h-full w-full object-contain" src={user?.avatar} />
+                            <img className="h-full w-full object-cover" src={user?.avatar} />
                         </button>
 
                         <Popover className="relative">
@@ -63,8 +63,8 @@ function Header() {
 
                             <Popover.Panel className="absolute top-full right-0 z-10 w-80 translate-y-3 space-y-3 rounded-lg border bg-white p-3 shadow-xl">
                                 <button className="flex w-full items-center border-b pb-2">
-                                    <div className="w-1h-11 h-11 overflow-hidden rounded-full">
-                                        <img className="h-full w-full object-contain" src={user?.avatar} />
+                                    <div className="h-11 w-11 overflow-hidden rounded-full">
+                                        <img className="h-full w-full object-cover" src={user?.avatar} />
                                     </div>
                                     <div className="ml-3 flex-1">
                                         <p className="text-left font-bold">{user?.name}</p>
