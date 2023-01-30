@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../../redux/slices/userSlice';
 
 function Avatar({ user, currentUser, isOwner, onChange }) {
     const [review, setReview] = useState(user?.avatar);
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
     useEffect(() => {
         setReview(user?.avatar);
     }, [user?.avatar]);
@@ -28,6 +31,11 @@ function Avatar({ user, currentUser, isOwner, onChange }) {
                         console.log(data.error);
                         return;
                     }
+                    dispatch(
+                        userActions.update({
+                            avatar: data.user.avatar,
+                        })
+                    );
                     onChange();
                     console.log('change avatar');
                 })
