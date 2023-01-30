@@ -11,6 +11,7 @@ import DetailPost from '../pages/DetailPost';
 import Verify from '../pages/Verify';
 import EditPost from '../pages/EditPost';
 import CommentTemp from '../pages/CommentTemp';
+import Profile from '../pages/Profile';
 
 // Public routes
 const publicRoutes = [
@@ -44,6 +45,11 @@ const publicRoutes = [
     {
         path: '/sample-login',
         component: SampleLogin,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/profile/:id',
+        component: Profile,
         layout: OnlyHeaderLayout,
     },
 ];
