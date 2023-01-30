@@ -63,7 +63,7 @@ function Profile() {
             </div>
 
             {/* BOTTOM GROUP */}
-            <div className="mt-7 grid grid-cols-3 gap-7">
+            <div className="mt-20 grid grid-cols-3 gap-7">
                 {/* POST */}
                 <div className="col-span-2">
                     <Posts user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
