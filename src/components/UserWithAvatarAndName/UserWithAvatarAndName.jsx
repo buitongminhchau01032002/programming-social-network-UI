@@ -1,6 +1,8 @@
+import { Link } from 'react-router-dom';
+
 function UserWithAvatarAndName({ user }) {
     return (
-        <div className="flex cursor-pointer items-center">
+        <Link to={'/profile/' + user._id} className="flex cursor-pointer items-center">
             <div className="peer h-6 w-6 overflow-hidden rounded-full">
                 <img
                     src={
@@ -11,7 +13,7 @@ function UserWithAvatarAndName({ user }) {
                 />
             </div>
             <p className="mb-0.5 pl-2 text-sm font-medium hover:underline peer-hover:underline">{user?.name}</p>
-        </div>
+        </Link>
     );
 }
 

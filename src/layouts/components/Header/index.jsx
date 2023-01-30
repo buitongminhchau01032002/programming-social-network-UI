@@ -41,9 +41,12 @@ function Header() {
                     </Link>
 
                     <div className="flex items-center space-x-1">
-                        <button className="h-9 w-9 overflow-hidden rounded-full ring-primary hover:ring-2">
+                        <Link
+                            to={'/profile/' + user._id}
+                            className="h-9 w-9 overflow-hidden rounded-full ring-primary hover:ring-2"
+                        >
                             <img className="h-full w-full object-cover" src={user?.avatar} />
-                        </button>
+                        </Link>
 
                         <Popover className="relative">
                             <Popover.Button as="button" className="outline-none hover:text-primary-dark">
@@ -62,7 +65,7 @@ function Header() {
                             </Popover.Button>
 
                             <Popover.Panel className="absolute top-full right-0 z-10 w-80 translate-y-3 space-y-3 rounded-lg border bg-white p-3 shadow-xl">
-                                <button className="flex w-full items-center border-b pb-2">
+                                <Link to={'/profile/' + user._id} className="flex w-full items-center border-b pb-2">
                                     <div className="h-11 w-11 overflow-hidden rounded-full">
                                         <img className="h-full w-full object-cover" src={user?.avatar} />
                                     </div>
@@ -70,7 +73,7 @@ function Header() {
                                         <p className="text-left font-bold">{user?.name}</p>
                                         <p className="text-left text-sm text-gray-600">{user?.email}</p>
                                     </div>
-                                </button>
+                                </Link>
 
                                 <button
                                     onClick={() => dispatch(userActions.logout())}

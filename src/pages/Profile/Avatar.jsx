@@ -51,7 +51,7 @@ function Avatar({ user, currentUser, isOwner, onChange }) {
     return (
         <>
             <div className="relative h-44 w-44 ">
-                <img className="h-full w-full overflow-hidden rounded-full object-cover" src={review} />
+                <img className="h-full w-full overflow-hidden rounded-full border object-cover" src={review} />
                 {isOwner && (
                     <label
                         className="absolute right-2 bottom-2 flex h-10 w-10 items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400"
