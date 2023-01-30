@@ -145,23 +145,24 @@ function PostCartSection({ postInit, postId, full }) {
                     </button>
                 </div>
             </div>
+            <Link to={'/comment/' + post._id}>
+                <h2
+                    className={clsx('my-2 cursor-pointer select-none font-bold', {
+                        'line-clamp-2 hover:line-clamp-none': full,
+                    })}
+                >
+                    <Markup content={post?.title}></Markup>
+                </h2>
 
-            <h2
-                className={clsx('my-2 cursor-pointer select-none font-bold', {
-                    'line-clamp-2 hover:line-clamp-none': full,
-                })}
-            >
-                <Markup content={post?.title}></Markup>
-            </h2>
-
-            <p
-                title="This is the description for this task"
-                className={clsx('t-1 h-full text-sm leading-5  text-gray-600 ', {
-                    'line-clamp-2 hover:line-clamp-none   ': full,
-                })}
-            >
-                <Markup content={post?.content}></Markup>
-            </p>
+                <p
+                    title="This is the description for this task"
+                    className={clsx('t-1 h-full text-sm leading-5  text-gray-600 ', {
+                        'line-clamp-2 hover:line-clamp-none   ': full,
+                    })}
+                >
+                    <Markup content={post?.content}></Markup>
+                </p>
+            </Link>
 
             <div className=" flex w-full items-center py-1   ">
                 <div className=" cursor-pointer select-none ">

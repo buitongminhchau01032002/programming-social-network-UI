@@ -5,9 +5,7 @@ import OnlyHeaderLayout from '../layouts/OnlyHeaderLayout';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import SignUp from '../pages/SignUp';
-import SampleLogin from '../pages/SampleLogin';
 import CreatePost from '../pages/CreatePost';
-import DetailPost from '../pages/DetailPost';
 import Verify from '../pages/Verify';
 import EditPost from '../pages/EditPost';
 import CommentTemp from '../pages/CommentTemp';
@@ -18,10 +16,6 @@ const publicRoutes = [
     {
         path: '/',
         component: Home,
-    },
-    {
-        path: '/detailPost/:id',
-        component: DetailPost,
     },
     {
         path: '/comment/:id',
@@ -42,11 +36,7 @@ const publicRoutes = [
         component: Verify,
         layout: OnlyHeaderLayout,
     },
-    {
-        path: '/sample-login',
-        component: SampleLogin,
-        layout: OnlyHeaderLayout,
-    },
+
     {
         path: '/profile/:id',
         component: Profile,
