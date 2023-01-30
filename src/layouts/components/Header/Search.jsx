@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { convert as convertHTMLtoText } from 'html-to-text';
 import UserWithAvatarAndName from '../../../components/UserWithAvatarAndName/UserWithAvatarAndName';
 import CategoryBadge from '../../../components/CategoryBadge/CategoryBadge';
+import { Link } from 'react-router-dom';
 
 function stringToSlug(str) {
     // remove accents
@@ -68,7 +69,8 @@ function Search() {
                 <button className="absolute right-0 left-0 hidden min-h-[200px] cursor-auto flex-col space-y-2 rounded-lg border bg-white p-3 shadow-md group-focus-within:flex">
                     {searchPosts.length > 0 ? (
                         searchPosts.map((post) => (
-                            <div
+                            <Link
+                                to={'/comment/' + post._id}
                                 key={post._id}
                                 className="w-full cursor-pointer rounded-md border border-gray-300 px-3 py-2 text-left hover:shadow"
                             >
@@ -80,7 +82,7 @@ function Search() {
                                     <UserWithAvatarAndName user={post?.creator} />
                                     <CategoryBadge category={post?.category} />
                                 </div>
-                            </div>
+                            </Link>
                         ))
                     ) : (
                         <div className="mt-8 flex h-full w-full flex-col items-center">

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 function Following({ user }) {
     return (
         <div>
-            <h2 className="text-lg font-semibold">Đang theo dõi</h2>
+            <h2 className="text-lg font-semibold">{`Đang theo dõi (${user?.following?.length || 0})`}</h2>
             <div className="mt-5 space-y-3">
                 {user?.following?.map((followingUser) => (
                     <Link to={'/profile/' + followingUser?._id} key={followingUser?._id} className="flex items-center">
