@@ -5,6 +5,7 @@ import { userSelector } from '../../redux/selectors/userSelector';
 import Avatar from './Avatar';
 import FollowButton from './FollowButton';
 import Following from './Following';
+import InforGroup from './InforGroup';
 import Posts from './Posts';
 
 function Profile() {
@@ -53,7 +54,9 @@ function Profile() {
                 </div>
 
                 {/* INFOR  */}
-                <div className="col-span-2">ầdsfdsaf</div>
+                <div className="col-span-2">
+                    <InforGroup user={user} currentUser={currentUser} onChange={getUser} isOwner={isOwner()} />
+                </div>
             </div>
 
             {/* BOTTOM GROUP */}
