@@ -11,31 +11,24 @@ import { Link } from 'react-router-dom';
 
 const validationSchema = Yup.object({
     email: Yup.string().required('Vui lòng nhập email!'),
-    password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
 });
 
-function Login() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
+function ForgotPassword() {
     const [loading, setLoading] = useState(false);
-    let success = 'Đăng nhập thành công';
-    let error = 'Đăng nhập thất bại';
 
-    const showSuccessNoti = () => toast.success(success);
+    const showSuccessNoti = () => toast.success('Link đổi mật khẩu đang được gửi tới email của bạn!');
     const showErorrNoti = () => toast.error(error);
 
     const form = useFormik({
         initialValues: {
             email: '',
-            password: '',
         },
         validationSchema,
-        onSubmit: handleLogin,
+        onSubmit: handleForgot,
     });
 
-    function handleLogin(values) {
-        fetch('http://localhost:8080/api/login', {
+    function handleForgot(values) {
+        fetch('http://localhost:8080/api/forgot-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,26 +36,11 @@ function Login() {
             body: JSON.stringify(values),
         })
             .then((res) => res.json())
-            .then((resBody) => {
-                if (resBody.error) {
-                    console.log('Đăng nhập không thành công');
-                    console.log(resBody);
-                    error = resBody.error.message;
-                    // alert(JSON.stringify(resBody, null, 2));
-                    showErorrNoti();
-                    return;
-                }
-
-                const user = resBody.user;
-                user.token = resBody.token;
-                dispatch(userActions.login(user));
-                console.log(user);
-                // alert(JSON.stringify(user, null, 2));
+            .then((resJson) => {
                 showSuccessNoti();
-                navigate('/');
             })
-            .catch((err) => {
-                console.log(err);
+            .catch((error) => {
+                () => toast.error(error);
             });
     }
 
@@ -82,12 +60,14 @@ function Login() {
                         </a>
                         <div className=" w-[448px] rounded-lg  shadow-2xl">
                             <div className="space-y-4 p-8">
-                                <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng nhập</h1>
+                                <h1 className="text-center text-2xl font-semibold text-gray-900">
+                                    Tìm tài khoản của bạn
+                                </h1>
 
                                 <form onSubmit={form.handleSubmit}>
                                     <div className="mb-2">
                                         <label htmlFor="username" className="mb-1 block font-medium text-gray-900 ">
-                                            Tài khoản
+                                            Email
                                         </label>
                                         <input
                                             type="text"
@@ -109,35 +89,6 @@ function Login() {
                                             {form.errors.email || 'No message'}
                                         </span>
                                     </div>
-                                    <div className="mb-2">
-                                        <label htmlFor="password" className="mb-1 block font-medium text-gray-900 ">
-                                            Mật khẩu
-                                        </label>
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            id="password"
-                                            onChange={form.handleChange}
-                                            onBlur={form.handleBlur}
-                                            value={form.values.password}
-                                            placeholder="Mật khẩu của bạn"
-                                            className={clsx('text-input w-full py-2', {
-                                                invalid: form.touched.password && form.errors.password,
-                                            })}
-                                        />
-                                        <span
-                                            className={clsx('text-sm text-red-500 opacity-0', {
-                                                'opacity-100': form.touched.password && form.errors.password,
-                                            })}
-                                        >
-                                            {form.errors.password || 'No message'}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-end">
-                                        <Link to={'/forgot-password'} className="justify-between">
-                                            <span className=" text-center text-slate-400">Quên mật khẩu ?</span>
-                                        </Link>
-                                    </div>
 
                                     <button
                                         type="submit"
@@ -145,7 +96,7 @@ function Login() {
                                         disabled={!form.dirty || loading}
                                     >
                                         {!loading ? (
-                                            <span>Đăng nhập</span>
+                                            <span>Tìm kiếm</span>
                                         ) : (
                                             <div className="flex items-center">
                                                 <svg
@@ -162,7 +113,7 @@ function Login() {
                                                         d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
                                                     />
                                                 </svg>
-                                                <span className="ml-1">Đang đăng nhập</span>
+                                                <span className="ml-1">Đang tìm kiếm</span>
                                             </div>
                                         )}
                                     </button>
@@ -176,4 +127,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default ForgotPassword;

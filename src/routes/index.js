@@ -4,6 +4,8 @@ import OnlyHeaderLayout from '../layouts/OnlyHeaderLayout';
 // Pages
 import Home from '../pages/Home';
 import Login from '../pages/Login';
+import ForgotPassword from '../pages/ForgotPassword';
+import ResetPass from '../pages/ResetPass';
 import SignUp from '../pages/SignUp';
 import CreatePost from '../pages/CreatePost';
 import Verify from '../pages/Verify';
@@ -25,6 +27,16 @@ const publicRoutes = [
     {
         path: '/login',
         component: Login,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/forgot-password',
+        component: ForgotPassword,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/reset-password/:token',
+        component: ResetPass,
         layout: OnlyHeaderLayout,
     },
     {

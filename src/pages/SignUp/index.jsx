@@ -151,7 +151,7 @@ function SignUp() {
                                             onChange={form.handleChange}
                                             onBlur={form.handleBlur}
                                             value={form.values.password}
-                                            placeholder="Mật khẩu của bạn"
+                                            placeholder="Nhập mật khẩu của bạn"
                                             className={clsx('text-input w-full py-2', {
                                                 invalid: form.touched.password && form.errors.password,
                                             })}
@@ -178,7 +178,7 @@ function SignUp() {
                                             onChange={form.handleChange}
                                             onBlur={form.handleBlur}
                                             value={form.values.confirmPassword}
-                                            placeholder="Mật khẩu của bạn"
+                                            placeholder="Nhập lại mật khẩu của bạn"
                                             className={clsx('text-input w-full py-2', {
                                                 invalid: form.touched.confirmPassword && form.errors.confirmPassword,
                                             })}

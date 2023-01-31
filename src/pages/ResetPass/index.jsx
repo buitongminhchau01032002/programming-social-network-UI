@@ -8,34 +8,34 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Formik, useFormik } from 'formik';
 import { Link } from 'react-router-dom';
-
+import { useParams } from 'react-router-dom';
 const validationSchema = Yup.object({
-    email: Yup.string().required('Vui lòng nhập email!'),
-    password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
+    password: Yup.string()
+        .required('Vui lòng nhập nhập mật khẩu!')
+        .min(6, 'Mật khẩu quá ngắn! mật khẩu phải có ít nhất 6 kí tự'),
+    confirmPassword: Yup.string()
+        .required('Vui lòng nhập nhập lại mật khẩu!')
+        .oneOf([Yup.ref('password'), null], 'Nhập lại mật khẩu không đúng'),
 });
 
-function Login() {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
+function ResetPass() {
     const [loading, setLoading] = useState(false);
-    let success = 'Đăng nhập thành công';
-    let error = 'Đăng nhập thất bại';
-
-    const showSuccessNoti = () => toast.success(success);
+    const { token } = useParams();
+    const showSuccessNoti = () => toast.success('Đổi mật khẩu thành công!');
     const showErorrNoti = () => toast.error(error);
 
     const form = useFormik({
         initialValues: {
-            email: '',
-            password: '',
+            newPassword: '',
+            confirmNewPassword: '',
         },
         validationSchema,
-        onSubmit: handleLogin,
+        onSubmit: handleReset,
     });
 
-    function handleLogin(values) {
-        fetch('http://localhost:8080/api/login', {
+    function handleReset(values) {
+        setLoading(true);
+        fetch('http://localhost:8080/api/reset-password/' + token, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,29 +43,17 @@ function Login() {
             body: JSON.stringify(values),
         })
             .then((res) => res.json())
-            .then((resBody) => {
-                if (resBody.error) {
-                    console.log('Đăng nhập không thành công');
-                    console.log(resBody);
-                    error = resBody.error.message;
-                    // alert(JSON.stringify(resBody, null, 2));
-                    showErorrNoti();
-                    return;
-                }
-
-                const user = resBody.user;
-                user.token = resBody.token;
-                dispatch(userActions.login(user));
-                console.log(user);
-                // alert(JSON.stringify(user, null, 2));
+            .then((data) => {
                 showSuccessNoti();
-                navigate('/');
             })
-            .catch((err) => {
-                console.log(err);
+            .catch((error) => {
+                console.log(error);
+                showErorrNoti();
+            })
+            .finally(() => {
+                setLoading(false);
             });
     }
-
     return (
         <>
             <div>
@@ -82,36 +70,12 @@ function Login() {
                         </a>
                         <div className=" w-[448px] rounded-lg  shadow-2xl">
                             <div className="space-y-4 p-8">
-                                <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng nhập</h1>
+                                <h1 className="text-center text-2xl font-semibold text-gray-900">Đổi mật khẩu</h1>
 
                                 <form onSubmit={form.handleSubmit}>
                                     <div className="mb-2">
-                                        <label htmlFor="username" className="mb-1 block font-medium text-gray-900 ">
-                                            Tài khoản
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="email"
-                                            id="email"
-                                            className={clsx('text-input w-full py-2', {
-                                                invalid: form.touched.email && form.errors.email,
-                                            })}
-                                            onChange={form.handleChange}
-                                            onBlur={form.handleBlur}
-                                            value={form.values.email}
-                                            placeholder="email"
-                                        />
-                                        <span
-                                            className={clsx('text-sm text-red-500 opacity-0', {
-                                                'opacity-100': form.touched.email && form.errors.email,
-                                            })}
-                                        >
-                                            {form.errors.email || 'No message'}
-                                        </span>
-                                    </div>
-                                    <div className="mb-2">
                                         <label htmlFor="password" className="mb-1 block font-medium text-gray-900 ">
-                                            Mật khẩu
+                                            Mật khẩu mới
                                         </label>
                                         <input
                                             type="password"
@@ -120,7 +84,7 @@ function Login() {
                                             onChange={form.handleChange}
                                             onBlur={form.handleBlur}
                                             value={form.values.password}
-                                            placeholder="Mật khẩu của bạn"
+                                            placeholder="Nhập mật khẩu mới"
                                             className={clsx('text-input w-full py-2', {
                                                 invalid: form.touched.password && form.errors.password,
                                             })}
@@ -133,19 +97,41 @@ function Login() {
                                             {form.errors.password || 'No message'}
                                         </span>
                                     </div>
-                                    <div className="flex justify-end">
-                                        <Link to={'/forgot-password'} className="justify-between">
-                                            <span className=" text-center text-slate-400">Quên mật khẩu ?</span>
-                                        </Link>
+                                    <div className="mb-2">
+                                        <label
+                                            htmlFor="confirmPassword"
+                                            className="mb-1 block font-medium text-gray-900 "
+                                        >
+                                            Nhập lại mật khẩu mới
+                                        </label>
+                                        <input
+                                            type="password"
+                                            name="confirmPassword"
+                                            id="confirmPassword"
+                                            onChange={form.handleChange}
+                                            onBlur={form.handleBlur}
+                                            value={form.values.confirmPassword}
+                                            placeholder="Nhập lại mật khẩu mới"
+                                            className={clsx('text-input w-full py-2', {
+                                                invalid: form.touched.confirmPassword && form.errors.confirmPassword,
+                                            })}
+                                        />
+                                        <span
+                                            className={clsx('text-sm text-red-500 opacity-0', {
+                                                'opacity-100':
+                                                    form.touched.confirmPassword && form.errors.confirmPassword,
+                                            })}
+                                        >
+                                            {form.errors.confirmPassword || 'No message'}
+                                        </span>
                                     </div>
-
                                     <button
                                         type="submit"
                                         className="btn btn-blue btn-md mt-4 w-full"
                                         disabled={!form.dirty || loading}
                                     >
                                         {!loading ? (
-                                            <span>Đăng nhập</span>
+                                            <span>Đổi mật khẩu</span>
                                         ) : (
                                             <div className="flex items-center">
                                                 <svg
@@ -162,7 +148,7 @@ function Login() {
                                                         d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
                                                     />
                                                 </svg>
-                                                <span className="ml-1">Đang đăng nhập</span>
+                                                <span className="ml-1">Đổi mật khẩu</span>
                                             </div>
                                         )}
                                     </button>
@@ -176,4 +162,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default ResetPass;
