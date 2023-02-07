@@ -14,6 +14,9 @@ const TABS = [
 ];
 
 function Home() {
+    var a = false;
+    console.log('init');
+
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
     console.log('page ne ba', page);
@@ -57,16 +60,13 @@ function Home() {
             .then((res) => res.json())
             .then((resJson) => {
                 setPosts(resJson.posts);
-                if (resJson.posts.length == 0) {
-                    showEmtpy();
-                    navigate('/');
-                }
             })
             .catch((error) => {
                 console.log(error);
                 setPosts([]);
             });
     }
+    console.log(a);
     return (
         <div className="">
             <TabBar
@@ -77,10 +77,17 @@ function Home() {
             />
             {/* Danh sách post */}
             <div>
-                {posts?.map((post, index) => (
-                    <PostCardSection key={index} postInit={post} full={true} />
-                ))}
-                {posts ? (
+                {posts
+                    ?.filter((post) => {
+                        if (post) {
+                            a = true;
+                            return post;
+                        }
+                    })
+                    ?.map((post, index) => (
+                        <PostCardSection key={index} postInit={post} full={true} />
+                    ))}
+                {!a ? (
                     <div className="flex items-center ">
                         <h1>Không có bài viết</h1>
                     </div>

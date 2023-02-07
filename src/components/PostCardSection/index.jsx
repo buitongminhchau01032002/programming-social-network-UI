@@ -63,7 +63,7 @@ function PostCartSection({ postInit, postId, full }) {
         }
 
         return [isOwner, isLiked, isSaved];
-    }, [post.likes, user.savedPosts]);
+    }, [post?.likes, user?.savedPosts]);
     const [numberLike, setNumberLike] = useState(post.likes?.length || 0);
     // const [liked, setLiked] = useState(isLiked);
     var liked = isLiked;
@@ -80,7 +80,7 @@ function PostCartSection({ postInit, postId, full }) {
     useEffect(() => {
         dispatch(
             userActions.update({
-                savedPosts: user.savedPosts || [],
+                savedPosts: user?.savedPosts || [],
             })
         );
     }, [post]);
