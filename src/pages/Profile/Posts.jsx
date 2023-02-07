@@ -19,7 +19,6 @@ function Posts({ user, currentUser, isOwner }) {
         if (isOwner) {
             return [
                 { id: 1, name: 'Đã đăng' },
-                { id: 2, name: 'Đang theo dõi' },
                 { id: 3, name: 'Đã lưu' },
             ];
         } else {
