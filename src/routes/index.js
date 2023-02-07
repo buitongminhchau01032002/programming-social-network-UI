@@ -46,7 +46,7 @@ const publicRoutes = [
         layout: OnlyHeaderLayout,
     },
     {
-        path: '/api/verification/:token',
+        path: '/verification/:token',
         component: Verify,
         layout: OnlyHeaderLayout,
     },

@@ -4,6 +4,8 @@ import TabBar from './TabBar';
 import _, { compact } from 'lodash';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../redux/selectors/userSelector';
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const TABS = [
     { id: 1, name: 'Tất cả' },
@@ -17,12 +19,13 @@ function Home() {
     console.log('page ne ba', page);
     const [selectedTab, setSelectedTab] = useState(TABS[0]);
     const user = useSelector(userSelector);
-
+    const navigate = useNavigate();
+    const showEmtpy = () => toast.error('Danh sách bài viết trống!');
     useEffect(() => {
-        getPosts(page);
+        getPosts();
     }, []);
 
-    function getPosts(page) {
+    function getPosts() {
         fetch('http://localhost:8080/api/posts')
             .then((res) => res.json())
             .then((resJson) => {
@@ -54,6 +57,10 @@ function Home() {
             .then((res) => res.json())
             .then((resJson) => {
                 setPosts(resJson.posts);
+                if (resJson.posts.length == 0) {
+                    showEmtpy();
+                    navigate('/');
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -71,7 +78,7 @@ function Home() {
             {/* Danh sách post */}
             <div>
                 {posts?.map((post, index) => (
-                    <PostCardSection key={index} postId={post._id} full={true} />
+                    <PostCardSection key={index} postInit={post} full={true} />
                 ))}
             </div>
         </div>

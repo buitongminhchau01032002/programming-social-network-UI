@@ -73,14 +73,6 @@ function SignUp() {
                 <ToastContainer hideProgressBar />
                 <section className=" ">
                     <div className=" mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-                        <a href="#" className="mb-6 flex items-center text-2xl font-semibold text-green-600 ">
-                            <img
-                                className="mr-2 h-8 w-8"
-                                src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                                alt="logo"
-                            />
-                            Mạng xã hội lập trình
-                        </a>
                         <div className=" w-[448px] rounded-lg  shadow-2xl">
                             <div className="space-y-4 p-8">
                                 <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng ký tài khoản</h1>
@@ -89,7 +81,7 @@ function SignUp() {
                                     <div className="mb-2">
                                         <label
                                             htmlFor="name"
-                                            className="mb-1 select-none  font-semibold text-gray-900  "
+                                            className="mb-2 select-none  font-semibold text-gray-900  "
                                         >
                                             Họ và tên
                                         </label>
@@ -106,7 +98,7 @@ function SignUp() {
                                             onChange={form.handleChange}
                                             onBlur={form.handleBlur}
                                             value={form.values.name}
-                                            placeholder="Tên nhân viên"
+                                            placeholder="Tên người dùng"
                                         />
                                         <span
                                             className={clsx('text-sm text-red-500 opacity-0', {
@@ -117,7 +109,7 @@ function SignUp() {
                                         </span>
                                     </div>
                                     <div className="mb-2">
-                                        <label htmlFor="username" className="mb-1 block font-medium text-gray-900 ">
+                                        <label htmlFor="username" className="mb-2 block font-medium text-gray-900 ">
                                             Tài khoản
                                         </label>
                                         <input
@@ -130,7 +122,7 @@ function SignUp() {
                                             onChange={form.handleChange}
                                             onBlur={form.handleBlur}
                                             value={form.values.email}
-                                            placeholder="email"
+                                            placeholder="Email"
                                         />
                                         <span
                                             className={clsx('text-sm text-red-500 opacity-0', {
@@ -141,7 +133,7 @@ function SignUp() {
                                         </span>
                                     </div>
                                     <div className="mb-2">
-                                        <label htmlFor="password" className="mb-1 block font-medium text-gray-900 ">
+                                        <label htmlFor="password" className="mb-2 block font-medium text-gray-900 ">
                                             Mật khẩu
                                         </label>
                                         <input
@@ -167,7 +159,7 @@ function SignUp() {
                                     <div className="mb-2">
                                         <label
                                             htmlFor="confirmPassword"
-                                            className="mb-1 block font-medium text-gray-900 "
+                                            className="mb-2 block font-medium text-gray-900 "
                                         >
                                             Nhập lại mật khẩu
                                         </label>
