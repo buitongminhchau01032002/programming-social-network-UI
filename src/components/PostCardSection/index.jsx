@@ -24,7 +24,7 @@ function PostCartSection({ postInit, postId, full }) {
 
     const showNonLogin = () => toast.error('Hãy đăng nhập để thực hiện thao tác!');
     const showLikePost = () => toast.success('Bạn đã thả tim bài viết!');
-    const showUnLikePost = () => toast.success('Bạn đã thả tim bài viết!');
+    const showUnLikePost = () => toast.success('Bạn đã hủy thả tim bài viết!');
     const showSuccessNoti = () => toast.success('Chỉnh sửa bài đăng thành công!');
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
 
@@ -92,12 +92,10 @@ function PostCartSection({ postInit, postId, full }) {
             showNonLogin();
             return false;
         } else if (isLike) {
-            console.log('is');
             handleLike();
             return true;
         } else {
             handleUnLike();
-            showUnLikePost();
             return true;
         }
     }
