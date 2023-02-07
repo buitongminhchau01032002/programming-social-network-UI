@@ -44,14 +44,6 @@ function Home() {
                 string = 'posts/following/posts';
             } else string = 'posts/saved/posts';
         }
-        console.log('http://localhost:8080/api/' + string);
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow',
-        };
-        var myHeaders = new Headers();
-        myHeaders.append('Authorization', 'Bearer ' + user.token);
         fetch('http://localhost:8080/api/' + string, {
             method: 'GET',
             headers: {
