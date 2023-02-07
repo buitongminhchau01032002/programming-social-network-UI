@@ -78,12 +78,20 @@ function Header() {
                                 </Link>
 
                                 {user?.role?.name === 'admin' && (
-                                    <Link
-                                        to="/manage-member"
-                                        className="flex justify-center rounded-md bg-gray-100 py-2 font-semibold hover:bg-gray-200"
-                                    >
-                                        Quản lý thành viên
-                                    </Link>
+                                    <>
+                                        <Link
+                                            to="/manage-member"
+                                            className="flex justify-center rounded-md bg-gray-100 py-2 text-sm font-semibold hover:bg-gray-200"
+                                        >
+                                            Quản lý thành viên
+                                        </Link>
+                                        <Link
+                                            to="/manage-category"
+                                            className="mt-2 flex justify-center rounded-md bg-gray-100 py-2 text-sm font-semibold hover:bg-gray-200"
+                                        >
+                                            Quản lý chủ đề
+                                        </Link>
+                                    </>
                                 )}
 
                                 <button

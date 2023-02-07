@@ -82,7 +82,7 @@ function ManageCategory() {
 
                     <input
                         type="text"
-                        className="text-input"
+                        className="text-input mt-2"
                         onChange={(e) => setCategoryName(e.target.value)}
                         value={categoryName}
                         placeholder="Tên chủ đề"
