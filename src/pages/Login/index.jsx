@@ -48,7 +48,6 @@ function Login() {
                     console.log('Đăng nhập không thành công');
                     console.log(resBody);
                     error = resBody.error.message;
-                    // alert(JSON.stringify(resBody, null, 2));
                     showErorrNoti();
                     return;
                 }

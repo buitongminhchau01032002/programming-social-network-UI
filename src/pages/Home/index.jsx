@@ -2,6 +2,8 @@ import PostCardSection from '../../components/PostCardSection';
 import { useState, useEffect } from 'react';
 import TabBar from './TabBar';
 import _, { compact } from 'lodash';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../redux/selectors/userSelector';
 
 const TABS = [
     { id: 1, name: 'Tất cả' },
@@ -14,6 +16,7 @@ function Home() {
     const [page, setPage] = useState(1);
     console.log('page ne ba', page);
     const [selectedTab, setSelectedTab] = useState(TABS[0]);
+    const user = useSelector(userSelector);
 
     useEffect(() => {
         getPosts(page);
@@ -44,11 +47,10 @@ function Home() {
 
     function getPosts(page) {
         console.log('goi lại');
-        fetch('http://localhost:8080/api/posts/?limit=3&page=' + page)
+        fetch('http://localhost:8080/api/posts')
             .then((res) => res.json())
             .then((resJson) => {
                 setPosts(resJson.posts);
-                if (page == 1   ) setPage(page + 1);
             })
             .catch((error) => {
                 console.log(error);
@@ -58,7 +60,37 @@ function Home() {
 
     function handleSelectedTabChange(tab) {
         console.log('Tab change: ', tab);
-        // Handle change posts ...
+        var string = '';
+        if (tab.id == 1) {
+            string = 'posts';
+        } else {
+            if (tab.id == 2) {
+                string = 'posts/following/posts';
+            } else string = 'posts/saved/posts';
+        }
+        console.log('http://localhost:8080/api/' + string);
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+        };
+        var myHeaders = new Headers();
+        myHeaders.append('Authorization', 'Bearer ' + user.token);
+        fetch('http://localhost:8080/api/' + string, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + user?.token,
+            },
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                setPosts(resJson.posts);
+            })
+            .catch((error) => {
+                console.log(error);
+                setPosts([]);
+            });
     }
     return (
         <div className="">
@@ -71,7 +103,7 @@ function Home() {
             {/* Danh sách post */}
             <div>
                 {posts?.map((post, index) => (
-                    <PostCardSection key={index} postInit={post} full={true} />
+                    <PostCardSection key={index} postId={post._id} full={true} />
                 ))}
             </div>
         </div>

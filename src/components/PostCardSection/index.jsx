@@ -3,10 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../redux/selectors';
+import { userActions } from '../../redux/slices/userSlice';
 import translateTime from '../../utils/translateTime';
 import Like from './Like';
+import Save from './Save';
+import Follow from './Follow';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import { useDispatch } from 'react-redux';
 import CategoryBadge from '../CategoryBadge/CategoryBadge';
 import UserWithAvatarAndName from '../UserWithAvatarAndName/UserWithAvatarAndName';
 import { toast } from 'react-toastify';
@@ -16,6 +20,7 @@ const avatar = {
 };
 function PostCartSection({ postInit, postId, full }) {
     translateTime(moment);
+    const dispatch = useDispatch();
     const user = useSelector(userSelector);
 
     const showNonLogin = () => toast.error('Hãy đăng nhập để thực hiện thao tác!');
@@ -23,30 +28,47 @@ function PostCartSection({ postInit, postId, full }) {
     const showUnLikePost = () => toast.success('Bạn đã thả tim bài viết!');
     const showSuccessNoti = () => toast.success('Chỉnh sửa bài đăng thành công!');
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
+
+    const showSavePost = () => toast.success('Bạn đã lưu bài viết!');
+    const showUnSavePost = () => toast.success('Bạn đã lưu bài viết!');
+
+    const showFollowCreator = () => toast.success('Bạn đã theo dõi người đăng viết!');
+    const showUnFollowCreator = () => toast.success('Bạn đã  hủy theo dõi người đăng bài viết!');
     const [post, setPost] = useState([]);
-    const [isOwner, isLiked] = useMemo(() => {
+    const [isOwner, isLiked, isSaved, isFollowed] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;
+        let isSaved = false;
+        let isFollowed = false;
         if (!user) {
-            return [isOwner, isLiked];
+            return [isOwner, isLiked, isSaved, isFollowed];
         }
-        if (post._id === user._id) {
+        if (post?._id === user?._id) {
             isOwner = true;
         }
-        if (post.likes?.includes(user._id)) {
+        if (post.likes?.includes(user?._id)) {
             isLiked = true;
         }
-        return [isOwner, isLiked];
+        if (user.savedPosts?.includes(post?._id)) {
+            isSaved = true;
+        }
+        if (user.following?.includes(post.creator?._id)) {
+            isFollowed = true;
+        }
+
+        return [isOwner, isLiked, isSaved, isFollowed];
     }, [post.likes]);
     const [numberLike, setNumberLike] = useState(post.likes?.length || 0);
-    const [liked, setLiked] = useState(isLiked);
+    // const [liked, setLiked] = useState(isLiked);
+    var liked = isLiked;
+    const [saved, setSaved] = useState(isSaved);
+    const [followed, setFolled] = useState(isFollowed);
     useEffect(() => {
         if (postInit) {
             setPost(postInit);
         } else getPost();
         setNumberLike(post.likes?.length);
-        setLiked(liked);
-    }, [post.likes?.length, liked, isLiked]);
+    }, [post]);
 
     function getPost() {
         fetch('http://localhost:8080/api/posts/' + postId)
@@ -64,12 +86,14 @@ function PostCartSection({ postInit, postId, full }) {
                 setPost([]);
             });
     }
+
     function handleToggleLike(isLike) {
         console.log('isLike: ', isLike);
         if (!user) {
             showNonLogin();
             return false;
         } else if (isLike) {
+            console.log('is');
             handleLike();
             return true;
         } else {
@@ -80,7 +104,7 @@ function PostCartSection({ postInit, postId, full }) {
     }
 
     function handleLike() {
-        fetch(' http://localhost:8080/api/posts/' + post._id + '/like', {
+        fetch(' http://localhost:8080/api/posts/' + post?._id + '/like', {
             method: 'PUT',
             headers: {
                 Authorization: 'Bearer ' + user?.token,
@@ -89,7 +113,7 @@ function PostCartSection({ postInit, postId, full }) {
             .then((res) => res.json())
             .then((resJson) => {
                 showLikePost();
-                setLiked(!liked);
+                liked = !liked;
             })
             .catch((error) => {
                 console.log('deo Like');
@@ -97,7 +121,7 @@ function PostCartSection({ postInit, postId, full }) {
             });
     }
     function handleUnLike() {
-        fetch(' http://localhost:8080/api/posts/' + post._id + '/unlike', {
+        fetch(' http://localhost:8080/api/posts/' + post?._id + '/unlike', {
             method: 'PUT',
             headers: {
                 Authorization: 'Bearer ' + user?.token,
@@ -105,27 +129,108 @@ function PostCartSection({ postInit, postId, full }) {
         })
             .then((res) => res.json())
             .then((resJson) => {
-                console.log('UnLike thanh cong');
-                setLiked(!liked);
+                showUnLikePost();
+                liked = !liked;
             })
             .catch((error) => {
                 console.log(error);
             });
     }
+    function handleToggleSave(isSaved) {
+        console.log('isSaved: ', isSaved);
+        if (!user) {
+            showNonLogin();
+            return false;
+        } else if (isSaved) {
+            handleSave();
+            return true;
+        } else {
+            handleUnSave();
+            return true;
+        }
+    }
 
+    function handleSave() {
+        fetch(' http://localhost:8080/api/posts/' + post?._id + '/save', {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + user?.token,
+            },
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                showSavePost();
+            })
+            .catch((error) => {
+                console.log('deo Like');
+                console.log(error);
+            });
+    }
+    function handleUnSave() {
+        fetch(' http://localhost:8080/api/posts/' + post?._id + '/unsave', {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + user?.token,
+            },
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                showUnSavePost();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    function handleToggleFollow(isFollowed) {
+        console.log('isFollowed: ', isFollowed);
+        if (!user) {
+            showNonLogin();
+            return false;
+        } else if (isFollowed) {
+            handleFollow();
+            return true;
+        } else {
+            handleUnFollow();
+            return true;
+        }
+    }
+
+    function handleFollow() {
+        fetch(' http://localhost:8080/api/users/' + post.creator?._id + '/follow', {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + user?.token,
+            },
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                showFollowCreator();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    function handleUnFollow() {
+        fetch(' http://localhost:8080/api/users/' + post.creator?._id + '/unfollow', {
+            method: 'PUT',
+            headers: {
+                Authorization: 'Bearer ' + user?.token,
+            },
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                showUnFollowCreator();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
     return (
         <div className=" mt-4 flex h-full  cursor-pointer flex-col justify-between rounded-lg border border-gray-300 p-3 px-3 py-2 text-left transition  hover:shadow-md ">
             <div className="my-1 flex justify-between ">
                 <div className="flex">
-                    <button className="mr-2 mb-2 h-6 w-6 items-center justify-center overflow-hidden rounded-full ring-primary hover:ring-2">
-                        <img
-                            className="h-full w-full  items-center justify-center object-contain"
-                            src={avatar?.avatar}
-                        />
-                    </button>
-                    <div className="mr-2 flex  cursor-pointer select-none  hover:underline  ">
-                        {post?.creator?.name}
-                    </div>
+                    <UserWithAvatarAndName user={post?.creator} />
+                    <Follow isFollowed={isFollowed} onToggle={handleToggleFollow} />
                 </div>
                 <div className="flex">
                     <div className="mr-2 flex cursor-pointer select-none  items-center justify-center ">
@@ -135,8 +240,9 @@ function PostCartSection({ postInit, postId, full }) {
                         title=""
                         className="mr-2 grid place-items-center items-center justify-center transition hover:text-slate-600"
                     >
-                        <i className="fa-regular fa-bookmark"></i>
+                        <Save isSaved={isSaved} onToggle={handleToggleSave} />
                     </button>
+
                     <button
                         title=""
                         className="mr-2 grid place-items-center items-center justify-center transition hover:text-slate-600"
