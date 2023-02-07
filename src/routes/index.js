@@ -11,6 +11,7 @@ import CreatePost from '../pages/CreatePost';
 import Verify from '../pages/Verify';
 import EditPost from '../pages/EditPost';
 import CommentTemp from '../pages/CommentTemp';
+import PostCategory from '../pages/PostCategory';
 import Profile from '../pages/Profile';
 import ManageMember from '../pages/ManageMember';
 import ManageCategory from '../pages/ManageCategory';
@@ -20,6 +21,10 @@ const publicRoutes = [
     {
         path: '/',
         component: Home,
+    },
+    {
+        path: '/post-category/:id',
+        component: PostCategory,
     },
     {
         path: '/comment/:id',

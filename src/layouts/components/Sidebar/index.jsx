@@ -45,13 +45,14 @@ function Sidebar() {
                 <h2 className="text-xl font-semibold">Chủ đề</h2>
                 <div className="mt-3 flex flex-wrap">
                     {categories?.map((category) => (
-                        <div
+                        <Link
+                            to={'/post-category/' + category._id}
                             key={category._id}
                             style={{ background: colorizeCategory(category) }}
                             className="mr-2 mb-2 rounded-md px-5 py-1 font-medium text-white"
                         >
                             {category.name || 'Không tên'}
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </section>
