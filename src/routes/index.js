@@ -13,6 +13,7 @@ import EditPost from '../pages/EditPost';
 import CommentTemp from '../pages/CommentTemp';
 import Profile from '../pages/Profile';
 import ManageMember from '../pages/ManageMember';
+import ManageCategory from '../pages/ManageCategory';
 
 // Public routes
 const publicRoutes = [
@@ -71,6 +72,11 @@ const privateRoutes = [
     {
         path: '/manage-member',
         component: ManageMember,
+        layout: OnlyHeaderLayout,
+    },
+    {
+        path: '/manage-category',
+        component: ManageCategory,
         layout: OnlyHeaderLayout,
     },
 ];
