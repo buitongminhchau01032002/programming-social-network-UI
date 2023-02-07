@@ -7,7 +7,6 @@ import { userActions } from '../../redux/slices/userSlice';
 import translateTime from '../../utils/translateTime';
 import Like from './Like';
 import Save from './Save';
-import Follow from './Follow';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
@@ -30,7 +29,7 @@ function PostCartSection({ postInit, postId, full }) {
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
 
     const showSavePost = () => toast.success('Bạn đã lưu bài viết!');
-    const showUnSavePost = () => toast.success('Bạn đã lưu bài viết!');
+    const showUnSavePost = () => toast.success('Bạn đã hủy lưu bài viết!');
 
     const showFollowCreator = () => toast.success('Bạn đã theo dõi người đăng viết!');
     const showUnFollowCreator = () => toast.success('Bạn đã  hủy theo dõi người đăng bài viết!');
@@ -61,8 +60,8 @@ function PostCartSection({ postInit, postId, full }) {
     const [numberLike, setNumberLike] = useState(post.likes?.length || 0);
     // const [liked, setLiked] = useState(isLiked);
     var liked = isLiked;
-    const [saved, setSaved] = useState(isSaved);
-    const [followed, setFolled] = useState(isFollowed);
+    var saved = isSaved;
+
     useEffect(() => {
         if (postInit) {
             setPost(postInit);
@@ -143,6 +142,7 @@ function PostCartSection({ postInit, postId, full }) {
             return false;
         } else if (isSaved) {
             handleSave();
+            console.log('save');
             return true;
         } else {
             handleUnSave();
@@ -160,9 +160,9 @@ function PostCartSection({ postInit, postId, full }) {
             .then((res) => res.json())
             .then((resJson) => {
                 showSavePost();
+                saved = !saved;
             })
             .catch((error) => {
-                console.log('deo Like');
                 console.log(error);
             });
     }
@@ -176,61 +176,18 @@ function PostCartSection({ postInit, postId, full }) {
             .then((res) => res.json())
             .then((resJson) => {
                 showUnSavePost();
+                saved = !saved;
             })
             .catch((error) => {
                 console.log(error);
             });
-    }
-    function handleToggleFollow(isFollowed) {
-        console.log('isFollowed: ', isFollowed);
-        if (!user) {
-            showNonLogin();
-            return false;
-        } else if (isFollowed) {
-            handleFollow();
-            return true;
-        } else {
-            handleUnFollow();
-            return true;
-        }
     }
 
-    function handleFollow() {
-        fetch(' http://localhost:8080/api/users/' + post.creator?._id + '/follow', {
-            method: 'PUT',
-            headers: {
-                Authorization: 'Bearer ' + user?.token,
-            },
-        })
-            .then((res) => res.json())
-            .then((resJson) => {
-                showFollowCreator();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
-    function handleUnFollow() {
-        fetch(' http://localhost:8080/api/users/' + post.creator?._id + '/unfollow', {
-            method: 'PUT',
-            headers: {
-                Authorization: 'Bearer ' + user?.token,
-            },
-        })
-            .then((res) => res.json())
-            .then((resJson) => {
-                showUnFollowCreator();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
     return (
         <div className=" mt-4 flex h-full  cursor-pointer flex-col justify-between rounded-lg border border-gray-300 p-3 px-3 py-2 text-left transition  hover:shadow-md ">
             <div className="my-1 flex justify-between ">
                 <div className="flex">
                     <UserWithAvatarAndName user={post?.creator} />
-                    <Follow isFollowed={isFollowed} onToggle={handleToggleFollow} />
                 </div>
                 <div className="flex">
                     <div className="mr-2 flex cursor-pointer select-none  items-center justify-center ">
