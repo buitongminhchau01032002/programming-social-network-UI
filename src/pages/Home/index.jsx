@@ -21,32 +21,8 @@ function Home() {
     useEffect(() => {
         getPosts(page);
     }, []);
-    useEffect(() => {
-        window.addEventListener('scroll', () => {
-            const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-            if (scrollTop + clientHeight >= scrollHeight - 0.5) {
-                fetch('http://localhost:8080/api/posts/?limit=3&page=' + page)
-                    .then((res) => res.json())
-                    .then((resJson) => {
-                        console.log('Gọi thêm api');
-                        setPosts(posts.concat(resJson.posts));
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        setPosts([]);
-                    });
-            }
-        });
-
-        return () => {
-            window.removeEventListener('scroll', () => {
-                setPage(page + 1);
-            });
-        };
-    }, []);
 
     function getPosts(page) {
-        console.log('goi lại');
         fetch('http://localhost:8080/api/posts')
             .then((res) => res.json())
             .then((resJson) => {
@@ -68,14 +44,6 @@ function Home() {
                 string = 'posts/following/posts';
             } else string = 'posts/saved/posts';
         }
-        console.log('http://localhost:8080/api/' + string);
-        var requestOptions = {
-            method: 'GET',
-            headers: myHeaders,
-            redirect: 'follow',
-        };
-        var myHeaders = new Headers();
-        myHeaders.append('Authorization', 'Bearer ' + user.token);
         fetch('http://localhost:8080/api/' + string, {
             method: 'GET',
             headers: {

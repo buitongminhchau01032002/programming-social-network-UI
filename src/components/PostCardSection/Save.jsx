@@ -31,7 +31,7 @@ function Save({ isSaved = false, onToggle, onNumberOfLikeClick }) {
                         <i className="fa-regular fa-bookmark to-blue-500"></i>
                     </button>
                 ) : (
-                    <button title="" className="mr-2 grid place-items-center items-center justify-center  transition">
+                    <button title="" className="mr-2  grid place-items-center items-center justify-center  transition">
                         <i className="fa-regular fa-bookmark"></i>
                     </button>
                 )}
