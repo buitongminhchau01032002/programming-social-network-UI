@@ -11,7 +11,9 @@ function Header() {
 
     return (
         <header className="fixed z-10 flex h-14 w-full items-center justify-between border-b bg-white px-16">
-            <Link to="/">LOGO</Link>
+            <Link to="/">
+                <img className="h-full object-cover" src="/vite.svg" />
+            </Link>
 
             {/* SEARCH */}
             <Search />
