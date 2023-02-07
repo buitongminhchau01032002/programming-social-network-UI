@@ -80,6 +80,13 @@ function Home() {
                 {posts?.map((post, index) => (
                     <PostCardSection key={index} postInit={post} full={true} />
                 ))}
+                {posts ? (
+                    <div className="flex items-center ">
+                        <h1>Không có bài viết</h1>
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
     );
