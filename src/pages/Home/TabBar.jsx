@@ -1,10 +1,19 @@
 import clsx from 'clsx';
-
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../redux/selectors';
+import { toast } from 'react-toastify';
 function TabBar({ tabs, selectedTab, setSelectedTab, onSelectedTabChange }) {
+    const user = useSelector(userSelector);
+
+    const showNonLogin = () => toast.error('Hãy đăng nhập để thực hiện thao tác!');
     function handleChangeTab(tab) {
-        setSelectedTab(tab);
-        if (tab !== selectedTab) {
-            onSelectedTabChange(tab);
+        if (!user) {
+            showNonLogin();
+        } else {
+            setSelectedTab(tab);
+            if (tab !== selectedTab) {
+                onSelectedTabChange(tab);
+            }
         }
     }
     return (
