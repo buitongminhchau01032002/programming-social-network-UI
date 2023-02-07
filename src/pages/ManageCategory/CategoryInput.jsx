@@ -72,12 +72,12 @@ function CategoryInput({ category, onChange }) {
             >
                 Sửa
             </button>
-            <button
+            {/* <button
                 onClick={() => deleteCategory()}
                 className="ml-2 flex h-7 items-center justify-center rounded-md bg-red-500 px-3 text-sm font-medium text-white transition hover:bg-red-600"
             >
                 Xoá
-            </button>
+            </button> */}
         </div>
     ) : (
         <div className="flex items-center">
