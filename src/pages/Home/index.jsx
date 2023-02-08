@@ -116,7 +116,7 @@ function Home() {
                 onSelectedOptionChange={handleSelectedOptionChange}
             />
             {/* Danh sách post */}
-            <div className="flex  flex-col" style={{ overflowY: 'overlay' }}>
+            <div className="flex h-full max-h-[85vh] flex-col" style={{ overflowY: 'overlay' }}>
                 {posts
                     ?.filter((post) => {
                         if (post) {

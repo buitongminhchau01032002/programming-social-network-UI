@@ -265,7 +265,7 @@ function PostCartSection({ postInit, postId, full }) {
                 <p
                     title="This is the description for this task"
                     className={clsx('t-1 h-full text-sm leading-5  text-gray-600 ', {
-                        'line-clamp-2 hover:line-clamp-none   ': full,
+                        'line-clamp-4 hover:line-clamp-none   ': full,
                     })}
                 >
                     <Markup content={post?.content}></Markup>
