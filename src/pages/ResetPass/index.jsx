@@ -19,6 +19,7 @@ const validationSchema = Yup.object({
 });
 
 function ResetPass() {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const { token } = useParams();
     const showSuccessNoti = () => toast.success('Đổi mật khẩu thành công!');
@@ -45,6 +46,9 @@ function ResetPass() {
             .then((res) => res.json())
             .then((data) => {
                 showSuccessNoti();
+                setTimeout(() => {
+                    navigate('/login');
+                }, 3000);
             })
             .catch((error) => {
                 console.log(error);
