@@ -73,6 +73,19 @@ function PostCartSection({ postInit, postId, full }) {
 
     useEffect(() => {
         if (postInit) {
+            fetch(' http://localhost:8080/api/posts/' + postInit._id + '/view', {
+                method: 'PUT',
+                headers: {
+                    Authorization: 'Bearer ' + user?.token,
+                },
+            })
+                .then((res) => res.json())
+                .then((resJson) => {})
+                .catch((error) => {
+                    console.log(error);
+                });
+            console.log('view');
+
             setPost(postInit);
         } else getPost();
         setNumberLike(post.likes?.length);
@@ -197,7 +210,7 @@ function PostCartSection({ postInit, postId, full }) {
             .then((resJson) => {
                 showUnSavePost();
                 saved = !saved;
-           
+
                 dispatch(
                     userActions.update({
                         savedPosts: resJson.updatedUser.savedPosts || [],
@@ -207,21 +220,6 @@ function PostCartSection({ postInit, postId, full }) {
             .catch((error) => {
                 console.log(error);
             });
-    }
-    function handleView() {
-        fetch(' http://localhost:8080/api/posts/' + post?._id + '/view', {
-            method: 'PUT',
-            headers: {
-                Authorization: 'Bearer ' + user?.token,
-            },
-        })
-            .then((res) => res.json())
-            .then((resJson) => {})
-            .catch((error) => {
-                console.log(error);
-            });
-        console.log('view');
-        navigate('/comment/' + post._id);
     }
 
     return (
@@ -255,7 +253,7 @@ function PostCartSection({ postInit, postId, full }) {
                     )}
                 </div>
             </div>
-            <div onClick={handleView}>
+            <Link to={'/comment/' + post?._id}>
                 <h2
                     className={clsx('my-2 cursor-pointer select-none font-bold', {
                         'line-clamp-2 hover:line-clamp-none': full,
@@ -272,7 +270,7 @@ function PostCartSection({ postInit, postId, full }) {
                 >
                     <Markup content={post?.content}></Markup>
                 </p>
-            </div>
+            </Link>
 
             <div className=" flex w-full items-center py-1   ">
                 <div className=" cursor-pointer select-none ">
@@ -288,25 +286,25 @@ function PostCartSection({ postInit, postId, full }) {
             </div>
             <div className=" ml-2  flex w-full py-1">
                 <Like isLiked={isLiked} numberOfLike={post.likes?.length || 0} onToggle={handleToggleLike} />
-
-                <div className="flex items-center" onClick={handleView}>
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="ml-2 h-5 w-5"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
-                        />
-                    </svg>
-                    <p className="ml-1">{post.numComments || 0}</p>
-                </div>
-
+                <Link to={'/comment/' + post?._id}>
+                    <div className="flex items-center">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="ml-2 h-5 w-5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
+                            />
+                        </svg>
+                        <p className="ml-1">{post.numComments || 0}</p>
+                    </div>
+                </Link>
                 <div className="flex items-center">
                     <div>
                         <i class="fa-regular fa-eye ml-2"></i>
