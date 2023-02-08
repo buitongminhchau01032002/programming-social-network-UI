@@ -108,7 +108,7 @@ function Posts({ user, currentUser, isOwner }) {
                                             navigate('/edit-post/' + post._id);
                                         }}
                                     >
-                                        <i class=" fa-solid fa-pencil"></i>
+                                        <i className=" fa-solid fa-pencil"></i>
                                     </button>
                                 ) : (
                                     <></>

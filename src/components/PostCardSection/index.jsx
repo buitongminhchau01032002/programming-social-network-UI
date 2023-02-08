@@ -246,7 +246,7 @@ function PostCartSection({ postInit, postId, full }) {
                                 navigate('/edit-post/' + post._id);
                             }}
                         >
-                            <i class=" fa-solid fa-pencil"></i>
+                            <i className=" fa-solid fa-pencil"></i>
                         </button>
                     ) : (
                         <></>
@@ -314,7 +314,7 @@ function PostCartSection({ postInit, postId, full }) {
                 </Link>
                 <div className="flex items-center">
                     <div>
-                        <i class="fa-regular fa-eye ml-2"></i>
+                        <i className="fa-regular fa-eye ml-2"></i>
                     </div>
                     <p className="ml-1">{post.views?.length || 0}</p>
                 </div>

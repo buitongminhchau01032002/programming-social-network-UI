@@ -8,7 +8,7 @@ import AuthLayout from './layouts/AuthLayout';
 function App() {
     return (
         <Router>
-            <div className="App h-screen overflow-hidden">
+            <div className="App">
                 <Routes>
                     {publicRoutes.map((route, index) => {
                         const Page = route.component;
