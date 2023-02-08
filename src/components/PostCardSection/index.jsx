@@ -41,10 +41,11 @@ function PostCartSection({ postInit, postId, full }) {
     useEffect(() => {
         const timerID = setInterval(() => {
             setTime((time) => time + 1);
-            console.log('a');
         }, 1000);
         return () => clearInterval(timerID);
     }, []);
+    console.log('re-re');
+
     const [isOwner, isLiked, isSaved] = useMemo(() => {
         let isOwner = false;
         let isLiked = false;

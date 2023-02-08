@@ -42,6 +42,7 @@ function Home() {
 
     function handleSelectedTabChange(tab) {
         console.log('Tab change: ', tab);
+        setPosts([]);
         var string = '';
         if (tab.id == 1) {
             string = 'posts';
@@ -60,6 +61,7 @@ function Home() {
             .then((res) => res.json())
             .then((resJson) => {
                 setPosts(resJson.posts);
+                console.log(resJson.posts);
             })
             .catch((error) => {
                 console.log(error);

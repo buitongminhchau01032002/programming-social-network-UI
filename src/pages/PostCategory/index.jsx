@@ -17,8 +17,9 @@ function PostCategory() {
     const navigate = useNavigate();
     const showEmtpy = () => toast.error('Danh sách bài viết trống!');
     useEffect(() => {
+        setPosts([]);
         getPosts();
-    }, []);
+    }, [id]);
 
     function getPosts() {
         fetch('http://localhost:8080/api/posts/?categoryId=' + id)
