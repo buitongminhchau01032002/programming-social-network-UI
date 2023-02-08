@@ -77,13 +77,6 @@ function PostCartSection({ postInit, postId, full }) {
         } else getPost();
         setNumberLike(post.likes?.length);
     }, [post]);
-    useEffect(() => {
-        dispatch(
-            userActions.update({
-                savedPosts: user?.savedPosts || [],
-            })
-        );
-    }, [post]);
 
     function getPost() {
         fetch('http://localhost:8080/api/posts/' + postId)

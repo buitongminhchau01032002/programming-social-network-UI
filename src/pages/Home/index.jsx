@@ -28,7 +28,6 @@ function Home() {
 
     const [posts, setPosts] = useState([]);
     const [page, setPage] = useState(1);
-    console.log('page ne ba', page);
     const [selectedTab, setSelectedTab] = useState(TABS[0]);
     const [selectedOption, setSelectedOption] = useState(OPTIONS[0]);
     const user = useSelector(userSelector);
@@ -49,8 +48,6 @@ function Home() {
             setC(3);
         }
         getPosts();
-
-        console.log('get', posts);
     }
     function getPosts() {
         setPosts([]);
