@@ -5,11 +5,9 @@ import PostCartSection from '../../components/PostCardSection';
 
 function CommentTemp() {
     const { id } = useParams();
-    
 
     return (
         <div>
-            <div>POST CONTENT</div>
             <PostCartSection postId={id} full={false} />
 
             {/* Add comment to page */}

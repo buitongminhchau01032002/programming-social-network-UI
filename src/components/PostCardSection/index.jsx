@@ -73,19 +73,6 @@ function PostCartSection({ postInit, postId, full }) {
 
     useEffect(() => {
         if (postInit) {
-            fetch(' http://localhost:8080/api/posts/' + postInit._id + '/view', {
-                method: 'PUT',
-                headers: {
-                    Authorization: 'Bearer ' + user?.token,
-                },
-            })
-                .then((res) => res.json())
-                .then((resJson) => {})
-                .catch((error) => {
-                    console.log(error);
-                });
-            console.log('view');
-
             setPost(postInit);
         } else getPost();
         setNumberLike(post.likes?.length);

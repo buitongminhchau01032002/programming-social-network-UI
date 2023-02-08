@@ -135,7 +135,7 @@ function Home() {
                         }
                     })
                     ?.map((post, index) => (
-                        <PostCardSection key={index} postInit={post} full={true} />
+                        <PostCardSection key={index} postId={post._id} full={true} />
                     ))}
                 {!a ? (
                     <div className="flex items-center ">
