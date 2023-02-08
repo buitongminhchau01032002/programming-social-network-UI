@@ -44,7 +44,6 @@ function PostCartSection({ postInit, postId, full }) {
         }, 1000);
         return () => clearInterval(timerID);
     }, []);
-    console.log('re-re');
 
     const [isOwner, isLiked, isSaved] = useMemo(() => {
         let isOwner = false;
@@ -198,7 +197,7 @@ function PostCartSection({ postInit, postId, full }) {
             .then((resJson) => {
                 showUnSavePost();
                 saved = !saved;
-
+           
                 dispatch(
                     userActions.update({
                         savedPosts: resJson.updatedUser.savedPosts || [],
