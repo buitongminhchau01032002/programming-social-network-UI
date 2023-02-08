@@ -65,7 +65,7 @@ function Sidebar() {
                     {/* POST */}
                     {posts
                         ?.sort((a, b) => {
-                            return b.views.length - a.views.length;
+                            return b.likes.length - a.likes.length;
                         })
                         .slice(0, 3)
                         ?.map((post) => (
