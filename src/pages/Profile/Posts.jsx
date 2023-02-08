@@ -3,8 +3,7 @@ import TabBar from '../Home/TabBar';
 import { convert as convertHTMLtoText } from 'html-to-text';
 import UserWithAvatarAndName from '../../components/UserWithAvatarAndName/UserWithAvatarAndName';
 import CategoryBadge from '../../components/CategoryBadge/CategoryBadge';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
 const TABS = [
     { id: 1, name: 'Đã đăng' },
     { id: 2, name: 'Đang theo dõi' },
@@ -14,7 +13,7 @@ const TABS = [
 function Posts({ user, currentUser, isOwner }) {
     const [selectedTab, setSelectedTab] = useState({ id: 1, name: 'Đã đăng' });
     const [posts, setPosts] = useState([]);
-
+    const navigate = useNavigate();
     const tabs = useMemo(() => {
         if (isOwner) {
             return [
@@ -99,7 +98,22 @@ function Posts({ user, currentUser, isOwner }) {
                             key={post._id}
                             className="block w-full cursor-pointer rounded-md border border-gray-300 px-3 py-2 text-left hover:shadow"
                         >
-                            <h2 className="font-bold line-clamp-1">{post?.title}</h2>
+                            <div className="flex justify-between">
+                                <h2 className="font-bold line-clamp-1">{post?.title}</h2>
+                                {isOwner ? (
+                                    <button
+                                        title=""
+                                        className="mr-2 grid place-items-center items-center justify-center transition hover:text-slate-600"
+                                        onClick={() => {
+                                            navigate('/edit-post/' + post._id);
+                                        }}
+                                    >
+                                        <i class=" fa-solid fa-pencil"></i>
+                                    </button>
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
                             <p className="mt-1 text-sm leading-4 text-gray-600 line-clamp-1">
                                 {convertHTMLtoText(post?.content, { wordwrap: false })}
                             </p>

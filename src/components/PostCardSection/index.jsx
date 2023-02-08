@@ -53,7 +53,7 @@ function PostCartSection({ postInit, postId, full }) {
         if (!user) {
             return [isOwner, isLiked, isSaved];
         }
-        if (post?._id === user?._id) {
+        if (post.creator?._id === user?._id) {
             isOwner = true;
         }
         if (post.likes?.includes(user?._id)) {
@@ -241,13 +241,19 @@ function PostCartSection({ postInit, postId, full }) {
                     >
                         <Save isSaved={isSaved} onToggle={handleToggleSave} />
                     </button>
-
-                    <button
-                        title=""
-                        className="mr-2 grid place-items-center items-center justify-center transition hover:text-slate-600"
-                    >
-                        <i className="fa fa-ellipsis-vertical"></i>
-                    </button>
+                    {isOwner ? (
+                        <button
+                            title=""
+                            className="mr-2 grid place-items-center items-center justify-center transition hover:text-slate-600"
+                            onClick={() => {
+                                navigate('/edit-post/' + post._id);
+                            }}
+                        >
+                            <i class=" fa-solid fa-pencil"></i>
+                        </button>
+                    ) : (
+                        <></>
+                    )}
                 </div>
             </div>
             <div onClick={handleView}>
