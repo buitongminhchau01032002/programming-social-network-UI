@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from 'react-router-dom';
 function Verify() {
     const navigate = useNavigate();
+
+    const { token } = useParams();
     console.log(token);
     let success = 'Đã xác nhận tài khoản thành công';
     let error = 'Đăng ký thất bại';
