@@ -270,6 +270,13 @@ function PostCartSection({ postInit, postId, full }) {
                 >
                     <Markup content={post?.content}></Markup>
                 </p>
+                {post.image ? (
+                    <div className=" overflow-hidden ">
+                        <img src={post.image} className="h-full w-full object-cover" />
+                    </div>
+                ) : (
+                    <></>
+                )}
             </Link>
 
             <div className=" flex w-full items-center py-1   ">
