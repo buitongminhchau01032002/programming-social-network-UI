@@ -13,14 +13,15 @@ const TABS = [
     { id: 3, name: 'Đã lưu' },
 ];
 const OPTIONS = [
-    { id: 1, name: 'Nhiều lượt thích', opt: 'likes' },
-    { id: 2, name: 'Nhiều lượt xem', opt: 'views' },
+    { id: 3, name: 'Mới nhất' },
+    { id: 1, name: 'Nhiều lượt thích' },
+    { id: 2, name: 'Nhiều lượt xem' },
 ];
 
 function Home() {
     var a = false;
 
-    const [c, setC] = useState(false);
+    const [c, setC] = useState(3);
     const [hide, setHide] = useState(true);
 
     console.log('init');
@@ -39,11 +40,13 @@ function Home() {
     function handleSelectedOptionChange(option) {
         console.log('Option change: ', option);
         if (option.id == 1) {
-            setC(false);
+            setC(1);
+            console.log('Option la : ', option, c);
+        } else if (option.id == 2) {
+            setC(2);
             console.log('Option la : ', option, c);
         } else {
-            setC(true);
-            console.log('Option la : ', option, c);
+            setC(3);
         }
         getPosts();
 
@@ -122,12 +125,13 @@ function Home() {
                         }
                     })
                     ?.sort((a, b) => {
-                        if (!c) {
+                        if (c == 1) {
                             console.log('a1 lon', c);
                             return b.likes.length - a.likes.length;
-                        } else {
+                        } else if (c == 2) {
                             console.log('a2 lon', c);
                             return b.views.length - a.views.length;
+                        } else {
                         }
                     })
                     ?.map((post, index) => (

@@ -21,6 +21,7 @@ function TabBar({
         if (!user) {
             showNonLogin();
         } else {
+            
             setSelectedTab(tab);
             if (tab !== selectedTab) {
                 onSelectedTabChange(tab);
